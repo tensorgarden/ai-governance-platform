@@ -9,10 +9,10 @@ import {
 } from "@/lib/demo-data";
 
 describe("AI Governance Platform — demo data integrity", () => {
-  it("has exactly 6 active policies", () => {
-    expect(demoPolicies).toHaveLength(6);
+  it("has exactly 7 active policies", () => {
+    expect(demoPolicies).toHaveLength(7);
     const activeCount = demoPolicies.filter(p => p.status === "active").length;
-    expect(activeCount).toBe(6);
+    expect(activeCount).toBe(7);
   });
 
   it("every policy has a valid category", () => {
@@ -29,8 +29,8 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
-  it("has exactly 20 usage events", () => {
-    expect(demoUsageEvents).toHaveLength(20);
+  it("has exactly 22 usage events", () => {
+    expect(demoUsageEvents).toHaveLength(22);
   });
 
   it("usage events reference valid policies", () => {
