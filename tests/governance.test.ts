@@ -80,4 +80,31 @@ describe("AI Governance Platform — demo data integrity", () => {
     expect(demoMetrics.complianceScorePercent).toBeLessThanOrEqual(100);
     expect(demoMetrics.activePolicies).toBe(demoPolicies.filter(p => p.status === "active").length);
   });
+
+  it("models shadow AI controls for unapproved AI tools and data egress", () => {
+    const shadowPolicy = demoPolicies.find(policy => policy.name === "Shadow AI Detection");
+    expect(shadowPolicy).toBeDefined();
+    expect(shadowPolicy?.affectedTools).toEqual(expect.arrayContaining(["deepseek", "perplexity"]));
+
+    const shadowEvents = demoUsageEvents.filter(event => event.policyName === "Shadow AI Detection");
+    expect(shadowEvents.length).toBeGreaterThanOrEqual(2);
+    expect(shadowEvents.some(event => event.action === "block")).toBe(true);
+    expect(shadowEvents.every(event => /unsanctioned|unregistered|extension/i.test(event.reason))).toBe(true);
+  });
+
+  it("escalates blocked shadow AI attempts as data exfiltration safety checks", () => {
+    const blockedShadowEvents = demoUsageEvents.filter(
+      event => event.policyName === "Shadow AI Detection" && event.action === "block"
+    );
+    const exfiltrationChecks = demoSafetyChecks.filter(
+      check => check.checkType === "data_exfiltration" && check.status === "blocked"
+    );
+
+    for (const event of blockedShadowEvents) {
+      expect(
+        exfiltrationChecks.some(check => check.userId === event.userId && check.toolName === event.toolName),
+        `Blocked shadow AI event ${event.id} should have a blocked data exfiltration safety check`
+      ).toBe(true);
+    }
+  });
 });
