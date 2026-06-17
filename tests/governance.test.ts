@@ -9,14 +9,14 @@ import {
 } from "@/lib/demo-data";
 
 describe("AI Governance Platform — demo data integrity", () => {
-  it("has exactly 7 active policies", () => {
-    expect(demoPolicies).toHaveLength(7);
+  it("has exactly 8 active policies", () => {
+    expect(demoPolicies).toHaveLength(8);
     const activeCount = demoPolicies.filter(p => p.status === "active").length;
-    expect(activeCount).toBe(7);
+    expect(activeCount).toBe(8);
   });
 
   it("every policy has a valid category", () => {
-    const validCategories = ["data_privacy", "model_usage", "output_review", "access_control", "audit", "bias_fairness"];
+    const validCategories = ["data_privacy", "model_usage", "output_review", "access_control", "audit", "bias_fairness", "agentic_autonomy"];
     for (const policy of demoPolicies) {
       expect(validCategories).toContain(policy.category);
     }
@@ -29,8 +29,8 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
-  it("has exactly 22 usage events", () => {
-    expect(demoUsageEvents).toHaveLength(22);
+  it("has exactly 25 usage events", () => {
+    expect(demoUsageEvents).toHaveLength(25);
   });
 
   it("usage events reference valid policies", () => {
@@ -49,7 +49,7 @@ describe("AI Governance Platform — demo data integrity", () => {
 
   it("safety checks have valid statuses and check types", () => {
     const validStatuses = ["passed", "flagged", "blocked"];
-    const validCheckTypes = ["prompt_injection", "pii_leak", "toxic_output", "hallucination", "data_exfiltration", "bias_detection"];
+    const validCheckTypes = ["prompt_injection", "pii_leak", "toxic_output", "hallucination", "data_exfiltration", "bias_detection", "agent_action"];
     for (const check of demoSafetyChecks) {
       expect(validStatuses).toContain(check.status);
       expect(validCheckTypes).toContain(check.checkType);
@@ -104,6 +104,41 @@ describe("AI Governance Platform — demo data integrity", () => {
       expect(
         exfiltrationChecks.some(check => check.userId === event.userId && check.toolName === event.toolName),
         `Blocked shadow AI event ${event.id} should have a blocked data exfiltration safety check`
+      ).toBe(true);
+    }
+  });
+
+  it("models agentic autonomy governance for autonomous AI agent actions", () => {
+    const agentPolicy = demoPolicies.find(policy => policy.name === "Agentic Autonomy Governance");
+    expect(agentPolicy).toBeDefined();
+    expect(agentPolicy?.category).toBe("agentic_autonomy");
+    expect(agentPolicy?.affectedTools).toEqual(expect.arrayContaining(["claude", "copilot"]));
+
+    const agentEvents = demoUsageEvents.filter(event => event.policyName === "Agentic Autonomy Governance");
+    expect(agentEvents.length).toBe(3);
+    expect(agentEvents.some(event => event.action === "allow")).toBe(true);
+    expect(agentEvents.some(event => event.action === "flag")).toBe(true);
+    expect(agentEvents.some(event => event.action === "block")).toBe(true);
+
+    const blockedAgentEvent = agentEvents.find(event => event.action === "block");
+    expect(blockedAgentEvent?.reason).toMatch(/mutation|change control/i);
+  });
+
+  it("escalates high-risk agent actions as safety checks", () => {
+    const agentChecks = demoSafetyChecks.filter(check => check.checkType === "agent_action");
+    expect(agentChecks.length).toBe(3);
+
+    const blockedAgentEvents = demoUsageEvents.filter(
+      event => event.policyName === "Agentic Autonomy Governance" && event.action === "block"
+    );
+    const blockedAgentChecks = agentChecks.filter(check => check.status === "blocked");
+    expect(blockedAgentChecks.length).toBe(1);
+    expect(blockedAgentChecks[0].severity).toBe("critical");
+
+    for (const event of blockedAgentEvents) {
+      expect(
+        blockedAgentChecks.some(check => check.userId === event.userId && check.toolName === event.toolName),
+        `Blocked agent action event ${event.id} should have a blocked agent_action safety check`
       ).toBe(true);
     }
   });

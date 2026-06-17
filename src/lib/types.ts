@@ -8,7 +8,7 @@ export interface AIPolicy {
   id: string;
   name: string;
   description: string;
-  category: "data_privacy" | "model_usage" | "output_review" | "access_control" | "audit" | "bias_fairness";
+  category: "data_privacy" | "model_usage" | "output_review" | "access_control" | "audit" | "bias_fairness" | "agentic_autonomy";
   status: PolicyStatus;
   enforcementRate: number;
   violationsLast30d: number;
@@ -48,7 +48,7 @@ export interface SafetyCheck {
   id: string;
   timestamp: string;
   toolName: string;
-  checkType: "prompt_injection" | "pii_leak" | "toxic_output" | "hallucination" | "data_exfiltration" | "bias_detection";
+  checkType: "prompt_injection" | "pii_leak" | "toxic_output" | "hallucination" | "data_exfiltration" | "bias_detection" | "agent_action";
   severity: Severity;
   status: "passed" | "flagged" | "blocked";
   detail: string;

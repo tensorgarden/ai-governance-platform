@@ -85,6 +85,18 @@ export const demoPolicies: AIPolicy[] = [
     owner: "IT Governance",
     affectedTools: ["chatgpt", "claude", "copilot", "gemini", "midjourney", "deepseek", "perplexity"],
   },
+  {
+    id: "pol_008",
+    name: "Agentic Autonomy Governance",
+    description: "All autonomous AI agent actions—API calls, data mutations, external service triggers—require approval or runtime guardrails. Agents operating without human-in-the-loop are restricted to read-only operations. Only 21% of enterprises have mature agentic AI governance (WitnessAI 2026).",
+    category: "agentic_autonomy",
+    status: "active",
+    enforcementRate: 81.9,
+    violationsLast30d: 38,
+    lastUpdated: "2026-06-14T09:30:00Z",
+    owner: "AI Safety Board",
+    affectedTools: ["claude", "copilot", "chatgpt"],
+  },
 ];
 
 export const demoUsageEvents: UsageEvent[] = [
@@ -110,6 +122,9 @@ export const demoUsageEvents: UsageEvent[] = [
   { id: "evt_020", timestamp: "2026-06-09T10:45:00Z", userId: "usr_009", userName: "Iris Park", toolName: "chatgpt", action: "flag", policyId: "pol_005", policyName: "Bias & Fairness Audit", inputSummary: "Draft performance review for direct reports", reason: "Performance language flagged for fairness review", department: "HR" },
   { id: "evt_021", timestamp: "2026-06-09T10:52:00Z", userId: "usr_014", userName: "Nate Okonkwo", toolName: "deepseek", action: "block", policyId: "pol_007", policyName: "Shadow AI Detection", inputSummary: "Paste proprietary sales data into DeepSeek for competitor analysis", reason: "Unsanctioned AI tool detected — data egress blocked. DeepSeek not in approved vendor registry.", department: "Sales" },
   { id: "evt_022", timestamp: "2026-06-09T11:00:00Z", userId: "usr_007", userName: "Grace Liu", toolName: "perplexity", action: "flag", policyId: "pol_007", policyName: "Shadow AI Detection", inputSummary: "Search for quarterly campaign performance benchmarks", reason: "Perplexity detected via browser extension scan — flagged for manager review", department: "Marketing" },
+  { id: "evt_023", timestamp: "2026-06-09T11:12:00Z", userId: "usr_003", userName: "Cara Okonkwo", toolName: "claude", action: "allow", policyId: "pol_008", policyName: "Agentic Autonomy Governance", inputSummary: "Run read-only repository scan for dependency vulnerabilities", reason: "Read-only agent action within approved scope", department: "Engineering" },
+  { id: "evt_024", timestamp: "2026-06-09T11:25:00Z", userId: "usr_012", userName: "Lena Schmidt", toolName: "copilot", action: "flag", policyId: "pol_008", policyName: "Agentic Autonomy Governance", inputSummary: "Auto-merge approved PR and trigger staging deploy", reason: "Write action flagged — deploy gate requires human approval", department: "Communications" },
+  { id: "evt_025", timestamp: "2026-06-09T11:40:00Z", userId: "usr_008", userName: "Hector Diaz", toolName: "chatgpt", action: "block", policyId: "pol_008", policyName: "Agentic Autonomy Governance", inputSummary: "Bulk-update all production firewall rules via API agent", reason: "Autonomous infrastructure mutation blocked — requires change control board sign-off", department: "Engineering" },
 ];
 
 export const demoComplianceReports: ComplianceReport[] = [
@@ -166,6 +181,9 @@ export const demoSafetyChecks: SafetyCheck[] = [
   { id: "saf_012", timestamp: "2026-06-09T10:30:00Z", toolName: "claude", checkType: "prompt_injection", severity: "critical", status: "blocked", detail: "Admin impersonation attempt: 'I am the system administrator'", userId: "usr_008" },
   { id: "saf_013", timestamp: "2026-06-09T10:52:00Z", toolName: "deepseek", checkType: "data_exfiltration", severity: "critical", status: "blocked", detail: "Shadow AI egress blocked: proprietary sales data sent to unregistered LLM endpoint", userId: "usr_014" },
   { id: "saf_014", timestamp: "2026-06-09T11:00:00Z", toolName: "perplexity", checkType: "data_exfiltration", severity: "high", status: "flagged", detail: "Unsactioned browser extension detected — Perplexity usage logged for audit", userId: "usr_007" },
+  { id: "saf_015", timestamp: "2026-06-09T11:12:00Z", toolName: "claude", checkType: "agent_action", severity: "low", status: "passed", detail: "Read-only repository scan — no mutation capability detected", userId: "usr_003" },
+  { id: "saf_016", timestamp: "2026-06-09T11:25:00Z", toolName: "copilot", checkType: "agent_action", severity: "medium", status: "flagged", detail: "Auto-merge and deploy action requires explicit human approval gate", userId: "usr_012" },
+  { id: "saf_017", timestamp: "2026-06-09T11:40:00Z", toolName: "chatgpt", checkType: "agent_action", severity: "critical", status: "blocked", detail: "Production infra mutation blocked — autonomous write to firewall rules without change control", userId: "usr_008" },
 ];
 
 export const demoTeamAccess: TeamAccess[] = [
@@ -226,15 +244,15 @@ export const demoTeamAccess: TeamAccess[] = [
 ];
 
 export const demoMetrics: GovernanceMetrics = {
-  totalPolicies: 7,
-  activePolicies: 7,
-  usageEventsToday: 22,
-  blockedEventsToday: 6,
-  flaggedEventsToday: 7,
-  violationsThisMonth: 118,
+  totalPolicies: 8,
+  activePolicies: 8,
+  usageEventsToday: 25,
+  blockedEventsToday: 7,
+  flaggedEventsToday: 8,
+  violationsThisMonth: 156,
   complianceScorePercent: 94,
-  safetyChecksRun: 1247,
-  safetyAlertsToday: 8,
+  safetyChecksRun: 1250,
+  safetyAlertsToday: 10,
   teamsWithAccess: 12,
   toolsMonitored: 7,
 };
