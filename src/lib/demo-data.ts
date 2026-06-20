@@ -97,6 +97,18 @@ export const demoPolicies: AIPolicy[] = [
     owner: "AI Safety Board",
     affectedTools: ["claude", "copilot", "chatgpt"],
   },
+  {
+    id: "pol_009",
+    name: "Model Supply Chain Integrity",
+    description: "All third-party and open-source AI models must be registered, risk-scored against CVSS and OWASP Top 10 for LLMs, and re-evaluated quarterly. Vendors with CVSS ≥7.0 or known supply chain compromises trigger automatic model suspension. NIST AI RMF Govern 2.3 and EU AI Act Article 28b.",
+    category: "model_supply_chain",
+    status: "active",
+    enforcementRate: 76.5,
+    violationsLast30d: 53,
+    lastUpdated: "2026-06-12T14:00:00Z",
+    owner: "AI Safety Board",
+    affectedTools: ["chatgpt", "claude", "gemini", "deepseek"],
+  },
 ];
 
 export const demoUsageEvents: UsageEvent[] = [
@@ -125,6 +137,9 @@ export const demoUsageEvents: UsageEvent[] = [
   { id: "evt_023", timestamp: "2026-06-09T11:12:00Z", userId: "usr_003", userName: "Cara Okonkwo", toolName: "claude", action: "allow", policyId: "pol_008", policyName: "Agentic Autonomy Governance", inputSummary: "Run read-only repository scan for dependency vulnerabilities", reason: "Read-only agent action within approved scope", department: "Engineering" },
   { id: "evt_024", timestamp: "2026-06-09T11:25:00Z", userId: "usr_012", userName: "Lena Schmidt", toolName: "copilot", action: "flag", policyId: "pol_008", policyName: "Agentic Autonomy Governance", inputSummary: "Auto-merge approved PR and trigger staging deploy", reason: "Write action flagged — deploy gate requires human approval", department: "Communications" },
   { id: "evt_025", timestamp: "2026-06-09T11:40:00Z", userId: "usr_008", userName: "Hector Diaz", toolName: "chatgpt", action: "block", policyId: "pol_008", policyName: "Agentic Autonomy Governance", inputSummary: "Bulk-update all production firewall rules via API agent", reason: "Autonomous infrastructure mutation blocked — requires change control board sign-off", department: "Engineering" },
+  { id: "evt_026", timestamp: "2026-06-09T12:05:00Z", userId: "usr_015", userName: "Priya Nair", toolName: "claude", action: "allow", policyId: "pol_009", policyName: "Model Supply Chain Integrity", inputSummary: "Use Claude 3.5 Sonnet for contract clause extraction", reason: "Anthropic registered vendor with CVSS 3.2, quarterly review completed Jun 1", department: "Legal" },
+  { id: "evt_027", timestamp: "2026-06-09T12:18:00Z", userId: "usr_008", userName: "Hector Diaz", toolName: "deepseek", action: "flag", policyId: "pol_009", policyName: "Model Supply Chain Integrity", inputSummary: "Evaluate DeepSeek V3 for code generation pilot", reason: "Vendor CVSS crossed 7.0 threshold after May advisory — flagged for security review before procurement approval", department: "Engineering" },
+  { id: "evt_028", timestamp: "2026-06-09T12:32:00Z", userId: "usr_016", userName: "Quinn Torres", toolName: "gemini", action: "block", policyId: "pol_009", policyName: "Model Supply Chain Integrity", inputSummary: "Upload customer PII to unregistered Gemini fine-tuning endpoint", reason: "Unregistered model variant — supply chain registry has no record of gemini-fine-tune endpoint. Blocked per NIST AI RMF Govern 2.3.", department: "Data Science" },
 ];
 
 export const demoComplianceReports: ComplianceReport[] = [
@@ -184,6 +199,8 @@ export const demoSafetyChecks: SafetyCheck[] = [
   { id: "saf_015", timestamp: "2026-06-09T11:12:00Z", toolName: "claude", checkType: "agent_action", severity: "low", status: "passed", detail: "Read-only repository scan — no mutation capability detected", userId: "usr_003" },
   { id: "saf_016", timestamp: "2026-06-09T11:25:00Z", toolName: "copilot", checkType: "agent_action", severity: "medium", status: "flagged", detail: "Auto-merge and deploy action requires explicit human approval gate", userId: "usr_012" },
   { id: "saf_017", timestamp: "2026-06-09T11:40:00Z", toolName: "chatgpt", checkType: "agent_action", severity: "critical", status: "blocked", detail: "Production infra mutation blocked — autonomous write to firewall rules without change control", userId: "usr_008" },
+  { id: "saf_018", timestamp: "2026-06-09T12:05:00Z", toolName: "claude", checkType: "model_provenance", severity: "low", status: "passed", detail: "Anthropic vendor registry verified — no CVSS changes since last quarterly review", userId: "usr_015" },
+  { id: "saf_019", timestamp: "2026-06-09T12:32:00Z", toolName: "gemini", checkType: "model_provenance", severity: "critical", status: "blocked", detail: "Unregistered model endpoint — gemini-fine-tune not in supply chain registry", userId: "usr_016" },
 ];
 
 export const demoTeamAccess: TeamAccess[] = [
@@ -244,15 +261,15 @@ export const demoTeamAccess: TeamAccess[] = [
 ];
 
 export const demoMetrics: GovernanceMetrics = {
-  totalPolicies: 8,
-  activePolicies: 8,
-  usageEventsToday: 25,
-  blockedEventsToday: 7,
-  flaggedEventsToday: 8,
-  violationsThisMonth: 156,
-  complianceScorePercent: 94,
-  safetyChecksRun: 1250,
-  safetyAlertsToday: 10,
+  totalPolicies: 9,
+  activePolicies: 9,
+  usageEventsToday: 28,
+  blockedEventsToday: 8,
+  flaggedEventsToday: 9,
+  violationsThisMonth: 209,
+  complianceScorePercent: 93,
+  safetyChecksRun: 1450,
+  safetyAlertsToday: 11,
   teamsWithAccess: 12,
-  toolsMonitored: 7,
+  toolsMonitored: 8,
 };

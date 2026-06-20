@@ -9,14 +9,14 @@ import {
 } from "@/lib/demo-data";
 
 describe("AI Governance Platform — demo data integrity", () => {
-  it("has exactly 8 active policies", () => {
-    expect(demoPolicies).toHaveLength(8);
+  it("has exactly 9 active policies", () => {
+    expect(demoPolicies).toHaveLength(9);
     const activeCount = demoPolicies.filter(p => p.status === "active").length;
-    expect(activeCount).toBe(8);
+    expect(activeCount).toBe(9);
   });
 
   it("every policy has a valid category", () => {
-    const validCategories = ["data_privacy", "model_usage", "output_review", "access_control", "audit", "bias_fairness", "agentic_autonomy"];
+    const validCategories = ["data_privacy", "model_usage", "output_review", "access_control", "audit", "bias_fairness", "agentic_autonomy", "model_supply_chain"];
     for (const policy of demoPolicies) {
       expect(validCategories).toContain(policy.category);
     }
@@ -29,8 +29,8 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
-  it("has exactly 25 usage events", () => {
-    expect(demoUsageEvents).toHaveLength(25);
+  it("has exactly 28 usage events", () => {
+    expect(demoUsageEvents).toHaveLength(28);
   });
 
   it("usage events reference valid policies", () => {
@@ -49,7 +49,7 @@ describe("AI Governance Platform — demo data integrity", () => {
 
   it("safety checks have valid statuses and check types", () => {
     const validStatuses = ["passed", "flagged", "blocked"];
-    const validCheckTypes = ["prompt_injection", "pii_leak", "toxic_output", "hallucination", "data_exfiltration", "bias_detection", "agent_action"];
+    const validCheckTypes = ["prompt_injection", "pii_leak", "toxic_output", "hallucination", "data_exfiltration", "bias_detection", "agent_action", "model_provenance"];
     for (const check of demoSafetyChecks) {
       expect(validStatuses).toContain(check.status);
       expect(validCheckTypes).toContain(check.checkType);
@@ -141,5 +141,49 @@ describe("AI Governance Platform — demo data integrity", () => {
         `Blocked agent action event ${event.id} should have a blocked agent_action safety check`
       ).toBe(true);
     }
+  });
+
+  it("models supply chain integrity for third-party and open-source AI models", () => {
+    const supplyChainPolicy = demoPolicies.find(policy => policy.name === "Model Supply Chain Integrity");
+    expect(supplyChainPolicy).toBeDefined();
+    expect(supplyChainPolicy?.category).toBe("model_supply_chain");
+    expect(supplyChainPolicy?.owner).toBe("AI Safety Board");
+    expect(supplyChainPolicy?.affectedTools).toEqual(expect.arrayContaining(["deepseek", "gemini"]));
+
+    const supplyChainEvents = demoUsageEvents.filter(event => event.policyName === "Model Supply Chain Integrity");
+    expect(supplyChainEvents.length).toBe(3);
+    expect(supplyChainEvents.some(event => event.action === "allow")).toBe(true);
+    expect(supplyChainEvents.some(event => event.action === "flag")).toBe(true);
+    expect(supplyChainEvents.some(event => event.action === "block")).toBe(true);
+
+    const blockedEvent = supplyChainEvents.find(event => event.action === "block");
+    expect(blockedEvent?.reason).toMatch(/unregistered|supply chain registry/i);
+  });
+
+  it("escalates supply chain violations as model provenance safety checks", () => {
+    const provenanceChecks = demoSafetyChecks.filter(check => check.checkType === "model_provenance");
+    expect(provenanceChecks.length).toBe(2);
+
+    const passedCheck = provenanceChecks.find(check => check.status === "passed");
+    expect(passedCheck).toBeDefined();
+    expect(passedCheck?.severity).toBe("low");
+    expect(passedCheck?.detail).toMatch(/vendor registry|CVSS/i);
+
+    const blockedCheck = provenanceChecks.find(check => check.status === "blocked");
+    expect(blockedCheck).toBeDefined();
+    expect(blockedCheck?.severity).toBe("critical");
+    expect(blockedCheck?.detail).toMatch(/unregistered|supply chain registry/i);
+
+    const blockedSupplyChainEvent = demoUsageEvents.find(
+      event => event.policyName === "Model Supply Chain Integrity" && event.action === "block"
+    );
+    expect(blockedSupplyChainEvent).toBeDefined();
+    expect(
+      provenanceChecks.some(check =>
+        check.status === "blocked" &&
+        check.userId === blockedSupplyChainEvent!.userId &&
+        check.toolName === blockedSupplyChainEvent!.toolName
+      )
+    ).toBe(true);
   });
 });
