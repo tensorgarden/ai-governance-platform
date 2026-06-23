@@ -144,6 +144,20 @@ function ComplianceReportCard({ report }: { report: ComplianceReport }) {
       <div className="flex flex-wrap gap-1 mt-3">
         {report.frameworks.map(f => <Badge key={f} tone="blue">{f}</Badge>)}
       </div>
+      <div className="mt-3 rounded-lg border border-slate-100 bg-slate-50/80 p-3">
+        <div className="mb-2 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-slate-500">
+          <span>Evidence trail</span>
+          <span>{report.evidenceArtifacts.length} artifacts</span>
+        </div>
+        <div className="space-y-2">
+          {report.evidenceArtifacts.slice(0, 2).map(artifact => (
+            <div key={artifact.id} className="rounded-md bg-white p-2 text-xs text-slate-600 shadow-sm">
+              <div className="font-semibold text-slate-800">{artifact.framework} · {artifact.control}</div>
+              <div className="mt-0.5 text-slate-400">{artifact.artifactType.replace(/_/g, " ")} · {artifact.owner} · {artifact.status.replace(/_/g, " ")}</div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

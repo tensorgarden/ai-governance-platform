@@ -31,6 +31,17 @@ export interface UsageEvent {
   department: string;
 }
 
+export interface ComplianceEvidenceArtifact {
+  id: string;
+  framework: string;
+  control: string;
+  artifactType: "policy" | "audit_log" | "risk_assessment" | "review_record" | "training_record";
+  owner: string;
+  collectedAt: string;
+  retention: string;
+  status: "current" | "needs_review";
+}
+
 export interface ComplianceReport {
   id: string;
   title: string;
@@ -42,6 +53,7 @@ export interface ComplianceReport {
   criticalCount: number;
   frameworks: string[];
   summary: string;
+  evidenceArtifacts: ComplianceEvidenceArtifact[];
 }
 
 export interface SafetyCheck {

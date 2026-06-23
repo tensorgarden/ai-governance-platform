@@ -186,4 +186,19 @@ describe("AI Governance Platform — demo data integrity", () => {
       )
     ).toBe(true);
   });
+
+  it("links compliance reports to current evidence artifacts mapped to declared frameworks", () => {
+    for (const report of demoComplianceReports) {
+      expect(report.evidenceArtifacts.length, `${report.id} should include compliance evidence`).toBeGreaterThanOrEqual(2);
+
+      for (const artifact of report.evidenceArtifacts) {
+        expect(report.frameworks).toContain(artifact.framework);
+        expect(artifact.control.length).toBeGreaterThan(20);
+        expect(artifact.owner.length).toBeGreaterThan(0);
+        expect(new Date(artifact.collectedAt).toString()).not.toBe("Invalid Date");
+        expect(["current", "needs_review"]).toContain(artifact.status);
+      }
+    }
+  });
+
 });

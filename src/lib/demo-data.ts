@@ -154,6 +154,11 @@ export const demoComplianceReports: ComplianceReport[] = [
     criticalCount: 0,
     frameworks: ["SOC 2 Type II", "GDPR", "EU AI Act", "ISO 42001"],
     summary: "Overall compliance posture is strong. Two medium-severity findings related to bias audit coverage remain open. All critical controls passing.",
+    evidenceArtifacts: [
+      { id: "art_001", framework: "EU AI Act", control: "High-risk AI system inventory and human oversight evidence", artifactType: "risk_assessment", owner: "AI Safety Board", collectedAt: "2026-06-07T15:20:00Z", retention: "10 years", status: "current" },
+      { id: "art_002", framework: "ISO 42001", control: "AI management system policy review and accountable owner sign-off", artifactType: "review_record", owner: "Compliance Team", collectedAt: "2026-06-07T15:35:00Z", retention: "7 years", status: "current" },
+      { id: "art_003", framework: "GDPR", control: "Prompt/output PII minimization evidence with redaction sampling", artifactType: "audit_log", owner: "Data Privacy Office", collectedAt: "2026-06-07T15:45:00Z", retention: "7 years", status: "current" },
+    ],
   },
   {
     id: "rep_002",
@@ -166,6 +171,10 @@ export const demoComplianceReports: ComplianceReport[] = [
     criticalCount: 2,
     frameworks: ["SOC 2 Type II", "NIST AI RMF"],
     summary: "Two critical prompt injection attempts detected this week. Enhanced shield rules deployed. Five medium findings related to PII redaction edge cases remain under investigation.",
+    evidenceArtifacts: [
+      { id: "art_004", framework: "NIST AI RMF", control: "Map/Measure/Manage evidence for injection, PII, and exfiltration safety checks", artifactType: "audit_log", owner: "Security Engineering", collectedAt: "2026-06-08T07:45:00Z", retention: "7 years", status: "current" },
+      { id: "art_005", framework: "SOC 2 Type II", control: "Incident response record for critical AI safety events", artifactType: "review_record", owner: "Security Engineering", collectedAt: "2026-06-08T07:55:00Z", retention: "7 years", status: "needs_review" },
+    ],
   },
   {
     id: "rep_003",
@@ -178,6 +187,11 @@ export const demoComplianceReports: ComplianceReport[] = [
     criticalCount: 0,
     frameworks: ["SOC 2 Type II", "GDPR", "CCPA", "SEC Rule 17a-4"],
     summary: "May scorecard shows 95% compliance score. One outstanding finding related to audit trail retention latency. All policies enforced above 90% threshold.",
+    evidenceArtifacts: [
+      { id: "art_006", framework: "SEC Rule 17a-4", control: "Immutable AI usage archive with retention proof and deletion lock", artifactType: "audit_log", owner: "Compliance Team", collectedAt: "2026-06-01T09:30:00Z", retention: "7 years", status: "current" },
+      { id: "art_007", framework: "SOC 2 Type II", control: "Monthly access review for governed AI tools", artifactType: "review_record", owner: "IT Governance", collectedAt: "2026-06-01T09:40:00Z", retention: "7 years", status: "current" },
+      { id: "art_008", framework: "GDPR", control: "Data processing and redaction control sample set", artifactType: "policy", owner: "Data Privacy Office", collectedAt: "2026-06-01T09:50:00Z", retention: "7 years", status: "current" },
+    ],
   },
 ];
 
