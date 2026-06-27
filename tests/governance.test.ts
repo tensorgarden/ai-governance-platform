@@ -5,6 +5,7 @@ import {
   demoComplianceReports,
   demoSafetyChecks,
   demoTeamAccess,
+  demoUseCaseInventory,
   demoMetrics,
 } from "@/lib/demo-data";
 
@@ -198,6 +199,43 @@ describe("AI Governance Platform — demo data integrity", () => {
         expect(new Date(artifact.collectedAt).toString()).not.toBe("Invalid Date");
         expect(["current", "needs_review"]).toContain(artifact.status);
       }
+    }
+  });
+
+
+  it("tracks AI governance at the use-case level with vendor-specific risk context", () => {
+    expect(demoUseCaseInventory.length).toBeGreaterThanOrEqual(4);
+    const policyIds = new Set(demoPolicies.map(policy => policy.id));
+
+    for (const useCase of demoUseCaseInventory) {
+      expect(useCase.vendor.length).toBeGreaterThan(0);
+      expect(useCase.modelName.length).toBeGreaterThan(0);
+      expect(useCase.frameworks.length).toBeGreaterThan(0);
+      expect(new Date(useCase.lastRiskAssessmentAt).toString()).not.toBe("Invalid Date");
+      expect(new Date(useCase.nextReviewDue).getTime()).toBeGreaterThan(new Date(useCase.lastRiskAssessmentAt).getTime());
+      expect(useCase.reviewerRoles.length).toBeGreaterThanOrEqual(2);
+      expect(useCase.linkedPolicyIds.every(policyId => policyIds.has(policyId))).toBe(true);
+    }
+
+    const riskTiersByModel = new Map<string, Set<string>>();
+    for (const useCase of demoUseCaseInventory) {
+      const tiers = riskTiersByModel.get(useCase.modelName) ?? new Set<string>();
+      tiers.add(useCase.riskTier);
+      riskTiersByModel.set(useCase.modelName, tiers);
+    }
+    expect([...riskTiersByModel.values()].some(tiers => tiers.size > 1)).toBe(true);
+  });
+
+  it("requires human oversight and cross-functional review for high-risk AI use cases", () => {
+    const highRiskUseCases = demoUseCaseInventory.filter(useCase => useCase.riskTier === "high");
+    expect(highRiskUseCases.length).toBeGreaterThanOrEqual(2);
+
+    for (const useCase of highRiskUseCases) {
+      expect(useCase.humanOversightRequired).toBe(true);
+      expect(useCase.workflowStatus).not.toBe("intake");
+      expect(useCase.reviewerRoles).toEqual(expect.arrayContaining(["business_owner", "legal", "compliance"]));
+      expect(useCase.linkedPolicyIds.length).toBeGreaterThanOrEqual(2);
+      expect(useCase.frameworks.some(framework => /EU AI Act|NIST AI RMF|ISO 42001/.test(framework))).toBe(true);
     }
   });
 

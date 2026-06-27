@@ -1,4 +1,4 @@
-import type { AIPolicy, UsageEvent, ComplianceReport, SafetyCheck, TeamAccess, GovernanceMetrics } from "./types";
+import type { AIPolicy, UsageEvent, ComplianceReport, SafetyCheck, TeamAccess, GovernanceMetrics, AIUseCaseInventoryItem } from "./types";
 
 export const demoPolicies: AIPolicy[] = [
   {
@@ -274,6 +274,77 @@ export const demoTeamAccess: TeamAccess[] = [
   },
 ];
 
+
+export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
+  {
+    id: "use_001",
+    name: "Internal knowledge summarization",
+    businessOwner: "Customer Success Ops",
+    technicalOwner: "Platform Engineering",
+    vendor: "Anthropic",
+    modelName: "Claude 3.5 Sonnet",
+    purpose: "Summarize internal playbooks and support macros for agents without making customer-impacting decisions.",
+    riskTier: "low",
+    frameworks: ["ISO 42001", "NIST AI RMF"],
+    lastRiskAssessmentAt: "2026-06-02T10:00:00Z",
+    nextReviewDue: "2026-09-02T10:00:00Z",
+    humanOversightRequired: false,
+    workflowStatus: "monitoring",
+    reviewerRoles: ["business_owner", "technical_lead"],
+    linkedPolicyIds: ["pol_001", "pol_006"],
+  },
+  {
+    id: "use_002",
+    name: "Candidate screening recommendations",
+    businessOwner: "People Operations",
+    technicalOwner: "Data Science",
+    vendor: "OpenAI",
+    modelName: "GPT-4.1 Enterprise",
+    purpose: "Rank applicant evidence against role requirements while preserving recruiter accountability for final decisions.",
+    riskTier: "high",
+    frameworks: ["EU AI Act", "ISO 42001", "GDPR"],
+    lastRiskAssessmentAt: "2026-06-06T14:30:00Z",
+    nextReviewDue: "2026-07-06T14:30:00Z",
+    humanOversightRequired: true,
+    workflowStatus: "risk_assessment",
+    reviewerRoles: ["business_owner", "legal", "compliance", "ethics"],
+    linkedPolicyIds: ["pol_004", "pol_005", "pol_006"],
+  },
+  {
+    id: "use_003",
+    name: "Credit line recommendation copilot",
+    businessOwner: "Finance Risk Committee",
+    technicalOwner: "ML Platform",
+    vendor: "Anthropic",
+    modelName: "Claude 3.5 Sonnet",
+    purpose: "Draft credit-line recommendations from governed financial inputs with human approval before adverse or customer-facing action.",
+    riskTier: "high",
+    frameworks: ["EU AI Act", "NIST AI RMF", "SOC 2 Type II"],
+    lastRiskAssessmentAt: "2026-06-10T09:15:00Z",
+    nextReviewDue: "2026-07-10T09:15:00Z",
+    humanOversightRequired: true,
+    workflowStatus: "approved",
+    reviewerRoles: ["business_owner", "technical_lead", "legal", "compliance", "security"],
+    linkedPolicyIds: ["pol_002", "pol_006", "pol_009"],
+  },
+  {
+    id: "use_004",
+    name: "Campaign copy localization",
+    businessOwner: "Marketing",
+    technicalOwner: "RevOps Systems",
+    vendor: "Google",
+    modelName: "Gemini Enterprise",
+    purpose: "Localize approved campaign copy for regional teams with bias and brand-review sampling.",
+    riskTier: "limited",
+    frameworks: ["GDPR", "ISO 42001"],
+    lastRiskAssessmentAt: "2026-05-29T11:45:00Z",
+    nextReviewDue: "2026-08-29T11:45:00Z",
+    humanOversightRequired: false,
+    workflowStatus: "monitoring",
+    reviewerRoles: ["business_owner", "compliance"],
+    linkedPolicyIds: ["pol_001", "pol_005"],
+  },
+];
 export const demoMetrics: GovernanceMetrics = {
   totalPolicies: 9,
   activePolicies: 9,

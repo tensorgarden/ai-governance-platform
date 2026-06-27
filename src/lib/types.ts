@@ -3,6 +3,27 @@ export type EnforcementAction = "allow" | "flag" | "block";
 export type Severity = "critical" | "high" | "medium" | "low";
 export type ComplianceStatus = "compliant" | "at_risk" | "non_compliant";
 export type AccessLevel = "full" | "restricted" | "none" | "review";
+export type AIUseCaseRiskTier = "low" | "limited" | "high" | "prohibited";
+export type GovernanceWorkflowStatus = "intake" | "risk_assessment" | "approved" | "monitoring" | "remediation";
+export type GovernanceReviewerRole = "business_owner" | "technical_lead" | "legal" | "compliance" | "security" | "ethics";
+
+export interface AIUseCaseInventoryItem {
+  id: string;
+  name: string;
+  businessOwner: string;
+  technicalOwner: string;
+  vendor: string;
+  modelName: string;
+  purpose: string;
+  riskTier: AIUseCaseRiskTier;
+  frameworks: string[];
+  lastRiskAssessmentAt: string;
+  nextReviewDue: string;
+  humanOversightRequired: boolean;
+  workflowStatus: GovernanceWorkflowStatus;
+  reviewerRoles: GovernanceReviewerRole[];
+  linkedPolicyIds: string[];
+}
 
 export interface AIPolicy {
   id: string;
