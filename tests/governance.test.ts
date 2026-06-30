@@ -239,4 +239,38 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("attaches oversight review records to every AI use case", () => {
+    const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
+
+    for (const useCase of demoUseCaseInventory) {
+      const review = useCase.oversightReview;
+      expect(new Date(review.lastReviewedAt).toString()).not.toBe("Invalid Date");
+      expect(review.reviewCadenceDays).toBeGreaterThan(0);
+      expect(review.escalationOwner.length).toBeGreaterThan(5);
+      expect(review.openFindings).toBeGreaterThanOrEqual(0);
+      expect(review.evidenceArtifactIds.length).toBeGreaterThanOrEqual(1);
+      expect(review.evidenceArtifactIds.every(artifactId => artifactIds.has(artifactId))).toBe(true);
+    }
+  });
+
+  it("keeps high-risk AI use cases on post-market human oversight cadence", () => {
+    const highRiskUseCases = demoUseCaseInventory.filter(useCase => useCase.riskTier === "high");
+    expect(highRiskUseCases.length).toBeGreaterThanOrEqual(2);
+
+    for (const useCase of highRiskUseCases) {
+      const review = useCase.oversightReview;
+      const lastReviewedAt = new Date(review.lastReviewedAt).getTime();
+      const nextReviewDue = new Date(useCase.nextReviewDue).getTime();
+      const daysUntilNextReview = (nextReviewDue - lastReviewedAt) / (24 * 60 * 60 * 1000);
+
+      expect(review.postMarketMonitoring).toBe(true);
+      expect(review.reviewCadenceDays).toBeLessThanOrEqual(30);
+      expect(review.evidenceArtifactIds.length).toBeGreaterThanOrEqual(2);
+      expect(daysUntilNextReview).toBeGreaterThan(0);
+      expect(daysUntilNextReview).toBeLessThanOrEqual(review.reviewCadenceDays + 1);
+      expect(useCase.humanOversightRequired).toBe(true);
+    }
+  });
+
+
 });

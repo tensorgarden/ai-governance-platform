@@ -7,6 +7,15 @@ export type AIUseCaseRiskTier = "low" | "limited" | "high" | "prohibited";
 export type GovernanceWorkflowStatus = "intake" | "risk_assessment" | "approved" | "monitoring" | "remediation";
 export type GovernanceReviewerRole = "business_owner" | "technical_lead" | "legal" | "compliance" | "security" | "ethics";
 
+export interface AIUseCaseOversightReview {
+  lastReviewedAt: string;
+  reviewCadenceDays: number;
+  escalationOwner: string;
+  openFindings: number;
+  evidenceArtifactIds: string[];
+  postMarketMonitoring: boolean;
+}
+
 export interface AIUseCaseInventoryItem {
   id: string;
   name: string;
@@ -22,6 +31,7 @@ export interface AIUseCaseInventoryItem {
   humanOversightRequired: boolean;
   workflowStatus: GovernanceWorkflowStatus;
   reviewerRoles: GovernanceReviewerRole[];
+  oversightReview: AIUseCaseOversightReview;
   linkedPolicyIds: string[];
 }
 

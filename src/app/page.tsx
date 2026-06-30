@@ -1,5 +1,5 @@
-import { demoPolicies, demoUsageEvents, demoComplianceReports, demoSafetyChecks, demoTeamAccess, demoMetrics } from "@/lib/demo-data";
-import type { AIPolicy, UsageEvent, ComplianceReport, SafetyCheck, TeamAccess } from "@/lib/types";
+import { demoPolicies, demoUsageEvents, demoComplianceReports, demoSafetyChecks, demoTeamAccess, demoUseCaseInventory, demoMetrics } from "@/lib/demo-data";
+import type { AIPolicy, UsageEvent, ComplianceReport, SafetyCheck, TeamAccess, AIUseCaseInventoryItem } from "@/lib/types";
 
 // --- Reusable components ---
 
@@ -272,6 +272,55 @@ function ComplianceGauge({ score }: { score: number }) {
   );
 }
 
+
+// --- High-risk use-case oversight ---
+
+function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) {
+  const riskTone: Record<string, "green" | "blue" | "amber" | "red"> = { low: "green", limited: "blue", high: "amber", prohibited: "red" };
+  return (
+    <div className="rounded-xl border border-slate-100 bg-white/80 p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="font-semibold text-sm text-slate-900">{useCase.name}</div>
+          <div className="text-xs text-slate-500">{useCase.businessOwner} · {useCase.vendor}</div>
+        </div>
+        <Badge tone={riskTone[useCase.riskTier] || "slate"}>{useCase.riskTier} risk</Badge>
+      </div>
+      <p className="mt-2 text-xs text-slate-600">{useCase.purpose}</p>
+      <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
+        <div className="rounded-lg bg-slate-50 p-2">
+          <div className="font-semibold text-slate-800">Last human review</div>
+          <div className="text-slate-500">{new Date(useCase.oversightReview.lastReviewedAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</div>
+        </div>
+        <div className="rounded-lg bg-slate-50 p-2">
+          <div className="font-semibold text-slate-800">Evidence artifacts</div>
+          <div className="text-slate-500">{useCase.oversightReview.evidenceArtifactIds.length} linked</div>
+        </div>
+      </div>
+      <div className="mt-3 flex flex-wrap gap-2">
+        <Badge tone={useCase.oversightReview.postMarketMonitoring ? "green" : "slate"}>post-market monitoring</Badge>
+        <Badge tone={useCase.oversightReview.openFindings === 0 ? "green" : "amber"}>{useCase.oversightReview.openFindings} open findings</Badge>
+      </div>
+      <div className="mt-2 text-xs text-slate-400">Escalation: {useCase.oversightReview.escalationOwner}</div>
+    </div>
+  );
+}
+
+function UseCaseOversightSection() {
+  const highRiskUseCases = demoUseCaseInventory.filter(useCase => useCase.riskTier === "high");
+  return (
+    <Card>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold text-slate-900">High-Risk Use Case Oversight</h2>
+        <Badge tone="amber">{highRiskUseCases.length} high-risk</Badge>
+      </div>
+      <div className="space-y-3">
+        {highRiskUseCases.map(useCase => <UseCaseOversightCard key={useCase.id} useCase={useCase} />)}
+      </div>
+    </Card>
+  );
+}
+
 // --- Main page ---
 
 export default function Home() {
@@ -304,6 +353,7 @@ export default function Home() {
         </div>
         <div className="space-y-6">
           <ComplianceGauge score={m.complianceScorePercent} />
+          <UseCaseOversightSection />
           <ComplianceSection />
           <SafetySection />
         </div>

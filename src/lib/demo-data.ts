@@ -291,6 +291,14 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
     humanOversightRequired: false,
     workflowStatus: "monitoring",
     reviewerRoles: ["business_owner", "technical_lead"],
+    oversightReview: {
+      lastReviewedAt: "2026-06-02T11:00:00Z",
+      reviewCadenceDays: 90,
+      escalationOwner: "Customer Success Ops",
+      openFindings: 0,
+      evidenceArtifactIds: ["art_002"],
+      postMarketMonitoring: false,
+    },
     linkedPolicyIds: ["pol_001", "pol_006"],
   },
   {
@@ -308,6 +316,14 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
     humanOversightRequired: true,
     workflowStatus: "risk_assessment",
     reviewerRoles: ["business_owner", "legal", "compliance", "ethics"],
+    oversightReview: {
+      lastReviewedAt: "2026-06-06T14:30:00Z",
+      reviewCadenceDays: 30,
+      escalationOwner: "People Operations AI Review Board",
+      openFindings: 2,
+      evidenceArtifactIds: ["art_001", "art_002"],
+      postMarketMonitoring: true,
+    },
     linkedPolicyIds: ["pol_004", "pol_005", "pol_006"],
   },
   {
@@ -325,6 +341,14 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
     humanOversightRequired: true,
     workflowStatus: "approved",
     reviewerRoles: ["business_owner", "technical_lead", "legal", "compliance", "security"],
+    oversightReview: {
+      lastReviewedAt: "2026-06-10T09:15:00Z",
+      reviewCadenceDays: 30,
+      escalationOwner: "Finance Risk Committee",
+      openFindings: 1,
+      evidenceArtifactIds: ["art_001", "art_004"],
+      postMarketMonitoring: true,
+    },
     linkedPolicyIds: ["pol_002", "pol_006", "pol_009"],
   },
   {
@@ -342,6 +366,14 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
     humanOversightRequired: false,
     workflowStatus: "monitoring",
     reviewerRoles: ["business_owner", "compliance"],
+    oversightReview: {
+      lastReviewedAt: "2026-05-29T12:15:00Z",
+      reviewCadenceDays: 60,
+      escalationOwner: "Marketing Compliance",
+      openFindings: 0,
+      evidenceArtifactIds: ["art_003"],
+      postMarketMonitoring: false,
+    },
     linkedPolicyIds: ["pol_001", "pol_005"],
   },
 ];
