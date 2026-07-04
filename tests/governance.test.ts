@@ -253,6 +253,34 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("tracks post-market monitoring signals with evidence and corrective due dates", () => {
+    const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
+    const highRiskUseCases = demoUseCaseInventory.filter(useCase => useCase.riskTier === "high");
+
+    for (const useCase of demoUseCaseInventory) {
+      const signals = useCase.oversightReview.monitoringSignals;
+      expect(signals.length).toBeGreaterThanOrEqual(useCase.riskTier === "high" ? 2 : 1);
+
+      for (const signal of signals) {
+        expect(["green", "watch", "breach"]).toContain(signal.status);
+        expect(signal.threshold.length).toBeGreaterThan(10);
+        expect(signal.observedValue.length).toBeGreaterThan(5);
+        expect(new Date(signal.lastCheckedAt).toString()).not.toBe("Invalid Date");
+        expect(signal.evidenceArtifactIds.every(artifactId => artifactIds.has(artifactId))).toBe(true);
+
+        if (signal.status !== "green") {
+          expect(signal.correctiveActionDue).toBeDefined();
+          expect(new Date(signal.correctiveActionDue!).getTime()).toBeGreaterThan(new Date(signal.lastCheckedAt).getTime());
+        }
+      }
+    }
+
+    for (const useCase of highRiskUseCases) {
+      expect(useCase.oversightReview.postMarketMonitoring).toBe(true);
+      expect(useCase.oversightReview.monitoringSignals.some(signal => signal.status === "watch" || signal.status === "breach")).toBe(true);
+    }
+  });
+
   it("keeps high-risk AI use cases on post-market human oversight cadence", () => {
     const highRiskUseCases = demoUseCaseInventory.filter(useCase => useCase.riskTier === "high");
     expect(highRiskUseCases.length).toBeGreaterThanOrEqual(2);

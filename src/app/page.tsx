@@ -277,6 +277,7 @@ function ComplianceGauge({ score }: { score: number }) {
 
 function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) {
   const riskTone: Record<string, "green" | "blue" | "amber" | "red"> = { low: "green", limited: "blue", high: "amber", prohibited: "red" };
+  const signalTone: Record<string, "green" | "amber" | "red" | "slate"> = { green: "green", watch: "amber", breach: "red" };
   return (
     <div className="rounded-xl border border-slate-100 bg-white/80 p-4">
       <div className="flex items-start justify-between gap-3">
@@ -300,6 +301,20 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
       <div className="mt-3 flex flex-wrap gap-2">
         <Badge tone={useCase.oversightReview.postMarketMonitoring ? "green" : "slate"}>post-market monitoring</Badge>
         <Badge tone={useCase.oversightReview.openFindings === 0 ? "green" : "amber"}>{useCase.oversightReview.openFindings} open findings</Badge>
+      </div>
+      <div className="mt-3 rounded-lg bg-slate-50 p-3">
+        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Monitoring signals</div>
+        <div className="mt-2 space-y-2">
+          {useCase.oversightReview.monitoringSignals.slice(0, 2).map(signal => (
+            <div key={signal.id} className="flex items-start justify-between gap-2 text-xs">
+              <div>
+                <div className="font-semibold text-slate-800">{signal.name}</div>
+                <div className="text-slate-500">{signal.observedValue}</div>
+              </div>
+              <Badge tone={signalTone[signal.status] || "slate"}>{signal.status}</Badge>
+            </div>
+          ))}
+        </div>
       </div>
       <div className="mt-2 text-xs text-slate-400">Escalation: {useCase.oversightReview.escalationOwner}</div>
     </div>

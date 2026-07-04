@@ -158,6 +158,7 @@ export const demoComplianceReports: ComplianceReport[] = [
       { id: "art_001", framework: "EU AI Act", control: "High-risk AI system inventory and human oversight evidence", artifactType: "risk_assessment", owner: "AI Safety Board", collectedAt: "2026-06-07T15:20:00Z", retention: "10 years", status: "current" },
       { id: "art_002", framework: "ISO 42001", control: "AI management system policy review and accountable owner sign-off", artifactType: "review_record", owner: "Compliance Team", collectedAt: "2026-06-07T15:35:00Z", retention: "7 years", status: "current" },
       { id: "art_003", framework: "GDPR", control: "Prompt/output PII minimization evidence with redaction sampling", artifactType: "audit_log", owner: "Data Privacy Office", collectedAt: "2026-06-07T15:45:00Z", retention: "7 years", status: "current" },
+      { id: "art_009", framework: "EU AI Act", control: "Post-market monitoring signal log and serious-incident escalation drill", artifactType: "review_record", owner: "AI Safety Board", collectedAt: "2026-06-09T13:10:00Z", retention: "10 years", status: "current" },
     ],
   },
   {
@@ -298,6 +299,9 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       openFindings: 0,
       evidenceArtifactIds: ["art_002"],
       postMarketMonitoring: false,
+      monitoringSignals: [
+        { id: "sig_001", name: "Grounded summary sampling", status: "green", lastCheckedAt: "2026-06-08T09:30:00Z", threshold: ">= 95% sampled summaries grounded in approved playbooks", observedValue: "97% grounded", evidenceArtifactIds: ["art_002"] },
+      ],
     },
     linkedPolicyIds: ["pol_001", "pol_006"],
   },
@@ -323,6 +327,10 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       openFindings: 2,
       evidenceArtifactIds: ["art_001", "art_002"],
       postMarketMonitoring: true,
+      monitoringSignals: [
+        { id: "sig_002", name: "Adverse impact ratio delta", status: "watch", lastCheckedAt: "2026-06-09T09:00:00Z", threshold: "< 5% swing across protected-class proxy groups", observedValue: "6.8% swing in senior engineering sample", correctiveActionDue: "2026-06-16T17:00:00Z", evidenceArtifactIds: ["art_001", "art_009"] },
+        { id: "sig_003", name: "Recruiter override review coverage", status: "green", lastCheckedAt: "2026-06-09T09:15:00Z", threshold: "100% AI-ranked shortlists sampled by accountable recruiter", observedValue: "100% sampled with named reviewer", evidenceArtifactIds: ["art_002"] },
+      ],
     },
     linkedPolicyIds: ["pol_004", "pol_005", "pol_006"],
   },
@@ -348,6 +356,10 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       openFindings: 1,
       evidenceArtifactIds: ["art_001", "art_004"],
       postMarketMonitoring: true,
+      monitoringSignals: [
+        { id: "sig_004", name: "Explanation drift review", status: "watch", lastCheckedAt: "2026-06-09T10:20:00Z", threshold: "< 3 unresolved explanation mismatches per week", observedValue: "3 unresolved mismatches awaiting risk committee sign-off", correctiveActionDue: "2026-06-14T17:00:00Z", evidenceArtifactIds: ["art_004", "art_009"] },
+        { id: "sig_005", name: "Human approval sampling", status: "green", lastCheckedAt: "2026-06-09T10:35:00Z", threshold: "100% adverse-action drafts approved before customer impact", observedValue: "100% approval gate coverage", evidenceArtifactIds: ["art_001"] },
+      ],
     },
     linkedPolicyIds: ["pol_002", "pol_006", "pol_009"],
   },
@@ -373,6 +385,9 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       openFindings: 0,
       evidenceArtifactIds: ["art_003"],
       postMarketMonitoring: false,
+      monitoringSignals: [
+        { id: "sig_006", name: "Localization bias sampling", status: "green", lastCheckedAt: "2026-06-03T11:00:00Z", threshold: "No high-severity brand or demographic bias findings in weekly sample", observedValue: "0 high-severity findings", evidenceArtifactIds: ["art_003"] },
+      ],
     },
     linkedPolicyIds: ["pol_001", "pol_005"],
   },
