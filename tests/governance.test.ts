@@ -253,6 +253,26 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("keeps serious incident reporting plans evidence-backed for AI Act timelines", () => {
+    const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
+
+    for (const useCase of demoUseCaseInventory) {
+      const plan = useCase.oversightReview.seriousIncidentEscalation;
+      expect(plan.playbookOwner.length).toBeGreaterThan(5);
+      expect(plan.marketAuthority.length).toBeGreaterThan(5);
+      expect(plan.reportingWindowHours).toBeGreaterThan(0);
+      expect(new Date(plan.lastDrillAt).toString()).not.toBe("Invalid Date");
+      expect(plan.evidenceArtifactIds.length).toBeGreaterThanOrEqual(1);
+      expect(plan.evidenceArtifactIds.every(artifactId => artifactIds.has(artifactId))).toBe(true);
+
+      if (useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")) {
+        expect(plan.reportingWindowHours).toBeLessThanOrEqual(15 * 24);
+        expect(plan.acceleratedWindowHours ?? Number.POSITIVE_INFINITY).toBeLessThanOrEqual(48);
+        expect(plan.evidenceArtifactIds).toContain("art_010");
+      }
+    }
+  });
+
   it("tracks post-market monitoring signals with evidence and corrective due dates", () => {
     const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
     const highRiskUseCases = demoUseCaseInventory.filter(useCase => useCase.riskTier === "high");

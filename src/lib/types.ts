@@ -19,6 +19,15 @@ export interface PostMarketMonitoringSignal {
   evidenceArtifactIds: string[];
 }
 
+export interface SeriousIncidentEscalationPlan {
+  playbookOwner: string;
+  marketAuthority: string;
+  reportingWindowHours: number;
+  acceleratedWindowHours?: number;
+  lastDrillAt: string;
+  evidenceArtifactIds: string[];
+}
+
 export interface AIUseCaseOversightReview {
   lastReviewedAt: string;
   reviewCadenceDays: number;
@@ -27,6 +36,7 @@ export interface AIUseCaseOversightReview {
   evidenceArtifactIds: string[];
   postMarketMonitoring: boolean;
   monitoringSignals: PostMarketMonitoringSignal[];
+  seriousIncidentEscalation: SeriousIncidentEscalationPlan;
 }
 
 export interface AIUseCaseInventoryItem {

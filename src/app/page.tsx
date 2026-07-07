@@ -302,6 +302,15 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
         <Badge tone={useCase.oversightReview.postMarketMonitoring ? "green" : "slate"}>post-market monitoring</Badge>
         <Badge tone={useCase.oversightReview.openFindings === 0 ? "green" : "amber"}>{useCase.oversightReview.openFindings} open findings</Badge>
       </div>
+      <div className="mt-3 rounded-lg border border-amber-100 bg-amber-50/70 p-3 text-xs">
+        <div className="font-semibold uppercase tracking-wide text-amber-700">Incident reporting readiness</div>
+        <div className="mt-1 text-slate-700">
+          {Math.round(useCase.oversightReview.seriousIncidentEscalation.reportingWindowHours / 24)} day reporting window · {useCase.oversightReview.seriousIncidentEscalation.marketAuthority}
+        </div>
+        <div className="mt-1 text-slate-500">
+          Last drill {new Date(useCase.oversightReview.seriousIncidentEscalation.lastDrillAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })} · {useCase.oversightReview.seriousIncidentEscalation.playbookOwner}
+        </div>
+      </div>
       <div className="mt-3 rounded-lg bg-slate-50 p-3">
         <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Monitoring signals</div>
         <div className="mt-2 space-y-2">
