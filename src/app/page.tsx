@@ -302,6 +302,20 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
         <Badge tone={useCase.oversightReview.postMarketMonitoring ? "green" : "slate"}>post-market monitoring</Badge>
         <Badge tone={useCase.oversightReview.openFindings === 0 ? "green" : "amber"}>{useCase.oversightReview.openFindings} open findings</Badge>
       </div>
+      {useCase.oversightReview.fundamentalRightsAssessment && (
+        <div className="mt-3 rounded-lg border border-indigo-100 bg-indigo-50/70 p-3 text-xs">
+          <div className="flex items-center justify-between gap-2">
+            <div className="font-semibold uppercase tracking-wide text-indigo-700">Fundamental rights assessment</div>
+            <Badge tone={useCase.oversightReview.fundamentalRightsAssessment.status === "current" ? "green" : "amber"}>
+              {useCase.oversightReview.fundamentalRightsAssessment.status.replace(/_/g, " ")}
+            </Badge>
+          </div>
+          <div className="mt-1 text-slate-700">
+            {useCase.oversightReview.fundamentalRightsAssessment.affectedGroups.length} affected groups · {useCase.oversightReview.fundamentalRightsAssessment.foreseeableHarms.length} foreseeable harms
+          </div>
+          <div className="mt-1 text-slate-500">{useCase.oversightReview.fundamentalRightsAssessment.updateTrigger}</div>
+        </div>
+      )}
       <div className="mt-3 rounded-lg border border-amber-100 bg-amber-50/70 p-3 text-xs">
         <div className="font-semibold uppercase tracking-wide text-amber-700">Incident reporting readiness</div>
         <div className="mt-1 text-slate-700">

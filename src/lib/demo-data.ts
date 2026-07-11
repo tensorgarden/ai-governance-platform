@@ -160,6 +160,7 @@ export const demoComplianceReports: ComplianceReport[] = [
       { id: "art_003", framework: "GDPR", control: "Prompt/output PII minimization evidence with redaction sampling", artifactType: "audit_log", owner: "Data Privacy Office", collectedAt: "2026-06-07T15:45:00Z", retention: "7 years", status: "current" },
       { id: "art_009", framework: "EU AI Act", control: "Post-market monitoring signal log and serious-incident escalation drill", artifactType: "review_record", owner: "AI Safety Board", collectedAt: "2026-06-09T13:10:00Z", retention: "10 years", status: "current" },
       { id: "art_010", framework: "EU AI Act", control: "Article 73 serious-incident reporting clock, incomplete initial report template, and authority-contact drill", artifactType: "review_record", owner: "AI Safety Board", collectedAt: "2026-06-09T14:05:00Z", retention: "10 years", status: "current" },
+      { id: "art_011", framework: "EU AI Act", control: "Article 27 fundamental rights impact assessment, affected-group review, and complaint pathway evidence", artifactType: "risk_assessment", owner: "Legal & Human Rights Review", collectedAt: "2026-06-10T15:30:00Z", retention: "10 years", status: "current" },
     ],
   },
   {
@@ -339,6 +340,17 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         { id: "sig_002", name: "Adverse impact ratio delta", status: "watch", lastCheckedAt: "2026-06-09T09:00:00Z", threshold: "< 5% swing across protected-class proxy groups", observedValue: "6.8% swing in senior engineering sample", correctiveActionDue: "2026-06-16T17:00:00Z", evidenceArtifactIds: ["art_001", "art_009"] },
         { id: "sig_003", name: "Recruiter override review coverage", status: "green", lastCheckedAt: "2026-06-09T09:15:00Z", threshold: "100% AI-ranked shortlists sampled by accountable recruiter", observedValue: "100% sampled with named reviewer", evidenceArtifactIds: ["art_002"] },
       ],
+      fundamentalRightsAssessment: {
+        status: "needs_update",
+        affectedGroups: ["Job applicants", "Candidates requiring workplace accommodations"],
+        foreseeableHarms: ["Discriminatory ranking", "Inaccessible challenge or appeal process"],
+        humanOversightMeasures: "Named recruiter reviews every shortlist and can reverse or suspend recommendations before candidate impact.",
+        complaintMechanism: "Candidate appeal portal routes challenges to People Operations and an independent accessibility reviewer.",
+        lastAssessedAt: "2026-06-06T13:45:00Z",
+        updateTrigger: "New graduate hiring workflow adds an affected candidate group and requires reassessment before launch.",
+        marketAuthorityNotifiedAt: "2026-06-06T16:10:00Z",
+        evidenceArtifactIds: ["art_001", "art_011"],
+      },
       seriousIncidentEscalation: {
         playbookOwner: "People Operations AI Review Board",
         marketAuthority: "Irish Market Surveillance Authority",
@@ -376,6 +388,17 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         { id: "sig_004", name: "Explanation drift review", status: "watch", lastCheckedAt: "2026-06-09T10:20:00Z", threshold: "< 3 unresolved explanation mismatches per week", observedValue: "3 unresolved mismatches awaiting risk committee sign-off", correctiveActionDue: "2026-06-14T17:00:00Z", evidenceArtifactIds: ["art_004", "art_009"] },
         { id: "sig_005", name: "Human approval sampling", status: "green", lastCheckedAt: "2026-06-09T10:35:00Z", threshold: "100% adverse-action drafts approved before customer impact", observedValue: "100% approval gate coverage", evidenceArtifactIds: ["art_001"] },
       ],
+      fundamentalRightsAssessment: {
+        status: "current",
+        affectedGroups: ["Small-business credit applicants", "Applicants using accessibility accommodations"],
+        foreseeableHarms: ["Unfair denial of essential financial services", "Opaque or inaccessible adverse-action explanation"],
+        humanOversightMeasures: "Credit analyst approval is required before any adverse action, with quarterly fairness sampling by Legal.",
+        complaintMechanism: "Applicants receive a human-review route with accessible submission options and a tracked response deadline.",
+        lastAssessedAt: "2026-06-10T14:30:00Z",
+        updateTrigger: "Reassess after a material model, data-source, affected-group, or deployment-context change.",
+        marketAuthorityNotifiedAt: "2026-06-10T16:00:00Z",
+        evidenceArtifactIds: ["art_001", "art_011"],
+      },
       seriousIncidentEscalation: {
         playbookOwner: "Finance Risk Committee",
         marketAuthority: "BaFin AI Market Surveillance Desk",

@@ -253,6 +253,37 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("keeps Article 27 fundamental rights assessments actionable for EU high-risk use cases", () => {
+    const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
+    const euHighRiskUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
+    );
+
+    expect(euHighRiskUseCases.length).toBeGreaterThanOrEqual(2);
+
+    for (const useCase of euHighRiskUseCases) {
+      const assessment = useCase.oversightReview.fundamentalRightsAssessment;
+      expect(assessment, `${useCase.id} should have a fundamental rights impact assessment`).toBeDefined();
+      expect(assessment!.affectedGroups.length).toBeGreaterThanOrEqual(1);
+      expect(assessment!.foreseeableHarms.length).toBeGreaterThanOrEqual(1);
+      expect(assessment!.humanOversightMeasures.length).toBeGreaterThan(30);
+      expect(assessment!.complaintMechanism.length).toBeGreaterThan(30);
+      expect(assessment!.updateTrigger.length).toBeGreaterThan(20);
+      expect(new Date(assessment!.lastAssessedAt).toString()).not.toBe("Invalid Date");
+      expect(assessment!.evidenceArtifactIds).toContain("art_011");
+      expect(assessment!.evidenceArtifactIds.every(artifactId => artifactIds.has(artifactId))).toBe(true);
+
+      if (assessment!.status === "current") {
+        expect(new Date(assessment!.marketAuthorityNotifiedAt!).toString()).not.toBe("Invalid Date");
+      }
+
+      if (assessment!.status === "needs_update") {
+        expect(useCase.workflowStatus).toBe("risk_assessment");
+        expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
+      }
+    }
+  });
+
   it("keeps serious incident reporting plans evidence-backed for AI Act timelines", () => {
     const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
 

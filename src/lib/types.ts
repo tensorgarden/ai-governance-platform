@@ -28,6 +28,20 @@ export interface SeriousIncidentEscalationPlan {
   evidenceArtifactIds: string[];
 }
 
+export type FundamentalRightsAssessmentStatus = "draft" | "current" | "needs_update";
+
+export interface FundamentalRightsImpactAssessment {
+  status: FundamentalRightsAssessmentStatus;
+  affectedGroups: string[];
+  foreseeableHarms: string[];
+  humanOversightMeasures: string;
+  complaintMechanism: string;
+  lastAssessedAt: string;
+  updateTrigger: string;
+  marketAuthorityNotifiedAt?: string;
+  evidenceArtifactIds: string[];
+}
+
 export interface AIUseCaseOversightReview {
   lastReviewedAt: string;
   reviewCadenceDays: number;
@@ -36,6 +50,7 @@ export interface AIUseCaseOversightReview {
   evidenceArtifactIds: string[];
   postMarketMonitoring: boolean;
   monitoringSignals: PostMarketMonitoringSignal[];
+  fundamentalRightsAssessment?: FundamentalRightsImpactAssessment;
   seriousIncidentEscalation: SeriousIncidentEscalationPlan;
 }
 
