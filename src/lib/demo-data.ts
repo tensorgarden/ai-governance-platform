@@ -342,6 +342,7 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       ],
       fundamentalRightsAssessment: {
         status: "needs_update",
+        applicabilityBasis: "voluntary",
         affectedGroups: ["Job applicants", "Candidates requiring workplace accommodations"],
         foreseeableHarms: ["Discriminatory ranking", "Inaccessible challenge or appeal process"],
         humanOversightMeasures: "Named recruiter reviews every shortlist and can reverse or suspend recommendations before candidate impact.",
@@ -390,6 +391,7 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       ],
       fundamentalRightsAssessment: {
         status: "current",
+        applicabilityBasis: "creditworthiness",
         affectedGroups: ["Small-business credit applicants", "Applicants using accessibility accommodations"],
         foreseeableHarms: ["Unfair denial of essential financial services", "Opaque or inaccessible adverse-action explanation"],
         humanOversightMeasures: "Credit analyst approval is required before any adverse action, with quarterly fairness sampling by Legal.",

@@ -29,9 +29,11 @@ export interface SeriousIncidentEscalationPlan {
 }
 
 export type FundamentalRightsAssessmentStatus = "draft" | "current" | "needs_update";
+export type FundamentalRightsAssessmentBasis = "public_body" | "public_service" | "creditworthiness" | "life_health_insurance" | "voluntary";
 
 export interface FundamentalRightsImpactAssessment {
   status: FundamentalRightsAssessmentStatus;
+  applicabilityBasis: FundamentalRightsAssessmentBasis;
   affectedGroups: string[];
   foreseeableHarms: string[];
   humanOversightMeasures: string;

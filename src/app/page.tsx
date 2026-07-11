@@ -311,7 +311,7 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
             </Badge>
           </div>
           <div className="mt-1 text-slate-700">
-            {useCase.oversightReview.fundamentalRightsAssessment.affectedGroups.length} affected groups · {useCase.oversightReview.fundamentalRightsAssessment.foreseeableHarms.length} foreseeable harms
+            {useCase.oversightReview.fundamentalRightsAssessment.affectedGroups.length} affected groups · {useCase.oversightReview.fundamentalRightsAssessment.foreseeableHarms.length} foreseeable harms · {useCase.oversightReview.fundamentalRightsAssessment.applicabilityBasis.replace(/_/g, " ")}
           </div>
           <div className="mt-1 text-slate-500">{useCase.oversightReview.fundamentalRightsAssessment.updateTrigger}</div>
         </div>
