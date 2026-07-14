@@ -324,6 +324,9 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
         <div className="mt-1 text-slate-500">
           Last drill {new Date(useCase.oversightReview.seriousIncidentEscalation.lastDrillAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })} · {useCase.oversightReview.seriousIncidentEscalation.playbookOwner}
         </div>
+        <div className="mt-1 text-slate-500">
+          {useCase.oversightReview.seriousIncidentEscalation.notificationChain.length} mapped recipients · first external notice: {useCase.oversightReview.seriousIncidentEscalation.notificationChain.find(recipient => recipient.role !== "internal_owner")?.organization}
+        </div>
       </div>
       <div className="mt-3 rounded-lg bg-slate-50 p-3">
         <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Monitoring signals</div>

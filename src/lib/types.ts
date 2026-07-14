@@ -19,12 +19,24 @@ export interface PostMarketMonitoringSignal {
   evidenceArtifactIds: string[];
 }
 
+export type IncidentNotificationRecipientRole = "internal_owner" | "provider" | "importer" | "distributor" | "market_authority";
+
+export interface IncidentNotificationRecipient {
+  sequence: number;
+  role: IncidentNotificationRecipientRole;
+  organization: string;
+  contactRoute: string;
+  targetWithinHours: number;
+  evidenceArtifactIds: string[];
+}
+
 export interface SeriousIncidentEscalationPlan {
   playbookOwner: string;
   marketAuthority: string;
   reportingWindowHours: number;
   acceleratedWindowHours?: number;
   lastDrillAt: string;
+  notificationChain: IncidentNotificationRecipient[];
   evidenceArtifactIds: string[];
 }
 

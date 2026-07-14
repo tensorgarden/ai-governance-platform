@@ -305,6 +305,42 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("keeps incident notification chains ordered, time-bound, and evidence-backed", () => {
+    const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
+
+    for (const useCase of demoUseCaseInventory) {
+      const plan = useCase.oversightReview.seriousIncidentEscalation;
+      expect(plan.notificationChain.length).toBeGreaterThanOrEqual(2);
+      expect(plan.notificationChain.map(recipient => recipient.sequence)).toEqual(
+        plan.notificationChain.map((_, index) => index + 1)
+      );
+
+      for (const recipient of plan.notificationChain) {
+        expect(recipient.organization.length).toBeGreaterThan(5);
+        expect(recipient.contactRoute.length).toBeGreaterThan(5);
+        expect(recipient.targetWithinHours).toBeGreaterThan(0);
+        expect(recipient.targetWithinHours).toBeLessThanOrEqual(plan.reportingWindowHours);
+        expect(recipient.evidenceArtifactIds.every(artifactId => artifactIds.has(artifactId))).toBe(true);
+      }
+    }
+  });
+
+  it("maps the Article 26 external notification sequence for high-risk EU AI use cases", () => {
+    const regulatedUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
+    );
+
+    for (const useCase of regulatedUseCases) {
+      const plan = useCase.oversightReview.seriousIncidentEscalation;
+      const externalChain = plan.notificationChain.filter(recipient => recipient.role !== "internal_owner");
+      expect(externalChain[0].role).toBe("provider");
+      expect(["importer", "distributor"]).toContain(externalChain[1].role);
+      expect(externalChain.at(-1)?.role).toBe("market_authority");
+      expect(externalChain.at(-1)?.organization).toBe(plan.marketAuthority);
+      expect(externalChain.every(recipient => recipient.targetWithinHours <= (plan.acceleratedWindowHours ?? plan.reportingWindowHours))).toBe(true);
+    }
+  });
+
   it("tracks post-market monitoring signals with evidence and corrective due dates", () => {
     const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
     const highRiskUseCases = demoUseCaseInventory.filter(useCase => useCase.riskTier === "high");
