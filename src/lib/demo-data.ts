@@ -161,6 +161,7 @@ export const demoComplianceReports: ComplianceReport[] = [
       { id: "art_009", framework: "EU AI Act", control: "Post-market monitoring signal log and serious-incident escalation drill", artifactType: "review_record", owner: "AI Safety Board", collectedAt: "2026-06-09T13:10:00Z", retention: "10 years", status: "current" },
       { id: "art_010", framework: "EU AI Act", control: "Article 73 serious-incident reporting clock, incomplete initial report template, and authority-contact drill", artifactType: "review_record", owner: "AI Safety Board", collectedAt: "2026-06-09T14:05:00Z", retention: "10 years", status: "current" },
       { id: "art_011", framework: "EU AI Act", control: "Article 27 fundamental rights impact assessment, affected-group review, and complaint pathway evidence", artifactType: "risk_assessment", owner: "Legal & Human Rights Review", collectedAt: "2026-06-10T15:30:00Z", retention: "10 years", status: "current" },
+      { id: "art_012", framework: "EU AI Act", control: "Article 4 role-, risk-, and deployment-context-specific AI literacy programme delivery records", artifactType: "training_record", owner: "Learning & AI Governance", collectedAt: "2026-06-11T11:20:00Z", retention: "7 years", status: "current" },
     ],
   },
   {
@@ -304,6 +305,17 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       monitoringSignals: [
         { id: "sig_001", name: "Grounded summary sampling", status: "green", lastCheckedAt: "2026-06-08T09:30:00Z", threshold: ">= 95% sampled summaries grounded in approved playbooks", observedValue: "97% grounded", evidenceArtifactIds: ["art_002"] },
       ],
+      aiLiteracyReadiness: {
+        status: "current",
+        accountableOwner: "Customer Success Enablement",
+        audiences: ["employees", "contractors"],
+        targetRoles: ["Support agents", "Support operations contractors"],
+        requiredTopics: ["Approved use and system limits", "Grounding and hallucination escalation", "Secure handling of internal knowledge"],
+        lastDeliveredAt: "2026-05-28T15:00:00Z",
+        nextRefreshDue: "2026-08-28T15:00:00Z",
+        completionRatePercent: 96,
+        evidenceArtifactIds: ["art_012"],
+      },
       seriousIncidentEscalation: {
         playbookOwner: "Customer Success Ops",
         marketAuthority: "Internal AI incident desk",
@@ -344,6 +356,17 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         { id: "sig_002", name: "Adverse impact ratio delta", status: "watch", lastCheckedAt: "2026-06-09T09:00:00Z", threshold: "< 5% swing across protected-class proxy groups", observedValue: "6.8% swing in senior engineering sample", correctiveActionDue: "2026-06-16T17:00:00Z", evidenceArtifactIds: ["art_001", "art_009"] },
         { id: "sig_003", name: "Recruiter override review coverage", status: "green", lastCheckedAt: "2026-06-09T09:15:00Z", threshold: "100% AI-ranked shortlists sampled by accountable recruiter", observedValue: "100% sampled with named reviewer", evidenceArtifactIds: ["art_002"] },
       ],
+      aiLiteracyReadiness: {
+        status: "needs_refresh",
+        accountableOwner: "People Operations Learning",
+        audiences: ["employees", "contractors", "service_providers"],
+        targetRoles: ["Recruiters", "Sourcers", "External recruiting partners"],
+        requiredTopics: ["Candidate bias and fundamental-rights risk", "Human oversight and recommendation override", "Candidate challenge and appeal handling"],
+        lastDeliveredAt: "2026-06-05T13:30:00Z",
+        nextRefreshDue: "2026-07-15T13:30:00Z",
+        completionRatePercent: 82,
+        evidenceArtifactIds: ["art_012"],
+      },
       fundamentalRightsAssessment: {
         status: "needs_update",
         applicabilityBasis: "voluntary",
@@ -399,6 +422,17 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         { id: "sig_004", name: "Explanation drift review", status: "watch", lastCheckedAt: "2026-06-09T10:20:00Z", threshold: "< 3 unresolved explanation mismatches per week", observedValue: "3 unresolved mismatches awaiting risk committee sign-off", correctiveActionDue: "2026-06-14T17:00:00Z", evidenceArtifactIds: ["art_004", "art_009"] },
         { id: "sig_005", name: "Human approval sampling", status: "green", lastCheckedAt: "2026-06-09T10:35:00Z", threshold: "100% adverse-action drafts approved before customer impact", observedValue: "100% approval gate coverage", evidenceArtifactIds: ["art_001"] },
       ],
+      aiLiteracyReadiness: {
+        status: "current",
+        accountableOwner: "Finance Risk Learning Lead",
+        audiences: ["employees", "service_providers"],
+        targetRoles: ["Credit analysts", "Risk approvers", "Model operations partners"],
+        requiredTopics: ["Human oversight before adverse action", "Explanation quality and model limitations", "Escalation of fairness and data-quality concerns"],
+        lastDeliveredAt: "2026-06-10T12:00:00Z",
+        nextRefreshDue: "2026-09-10T12:00:00Z",
+        completionRatePercent: 100,
+        evidenceArtifactIds: ["art_012"],
+      },
       fundamentalRightsAssessment: {
         status: "current",
         applicabilityBasis: "creditworthiness",
@@ -453,6 +487,17 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       monitoringSignals: [
         { id: "sig_006", name: "Localization bias sampling", status: "green", lastCheckedAt: "2026-06-03T11:00:00Z", threshold: "No high-severity brand or demographic bias findings in weekly sample", observedValue: "0 high-severity findings", evidenceArtifactIds: ["art_003"] },
       ],
+      aiLiteracyReadiness: {
+        status: "current",
+        accountableOwner: "Marketing Enablement",
+        audiences: ["employees", "contractors"],
+        targetRoles: ["Campaign marketers", "Localization partners"],
+        requiredTopics: ["Hallucination and brand-review limits", "Bias-aware localization", "Transparency for AI-assisted content"],
+        lastDeliveredAt: "2026-05-30T10:00:00Z",
+        nextRefreshDue: "2026-08-30T10:00:00Z",
+        completionRatePercent: 91,
+        evidenceArtifactIds: ["art_012"],
+      },
       seriousIncidentEscalation: {
         playbookOwner: "Marketing Compliance",
         marketAuthority: "Internal AI incident desk",

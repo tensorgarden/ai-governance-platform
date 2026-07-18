@@ -56,6 +56,21 @@ export interface FundamentalRightsImpactAssessment {
   evidenceArtifactIds: string[];
 }
 
+export type AILiteracyReadinessStatus = "current" | "needs_refresh" | "planned";
+export type AILiteracyAudience = "employees" | "contractors" | "service_providers";
+
+export interface AILiteracyReadiness {
+  status: AILiteracyReadinessStatus;
+  accountableOwner: string;
+  audiences: AILiteracyAudience[];
+  targetRoles: string[];
+  requiredTopics: string[];
+  lastDeliveredAt: string;
+  nextRefreshDue: string;
+  completionRatePercent: number;
+  evidenceArtifactIds: string[];
+}
+
 export interface AIUseCaseOversightReview {
   lastReviewedAt: string;
   reviewCadenceDays: number;
@@ -64,6 +79,7 @@ export interface AIUseCaseOversightReview {
   evidenceArtifactIds: string[];
   postMarketMonitoring: boolean;
   monitoringSignals: PostMarketMonitoringSignal[];
+  aiLiteracyReadiness: AILiteracyReadiness;
   fundamentalRightsAssessment?: FundamentalRightsImpactAssessment;
   seriousIncidentEscalation: SeriousIncidentEscalationPlan;
 }

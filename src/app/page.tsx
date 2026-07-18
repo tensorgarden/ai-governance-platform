@@ -302,6 +302,20 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
         <Badge tone={useCase.oversightReview.postMarketMonitoring ? "green" : "slate"}>post-market monitoring</Badge>
         <Badge tone={useCase.oversightReview.openFindings === 0 ? "green" : "amber"}>{useCase.oversightReview.openFindings} open findings</Badge>
       </div>
+      <div className="mt-3 rounded-lg border border-blue-100 bg-blue-50/70 p-3 text-xs">
+        <div className="flex items-center justify-between gap-2">
+          <div className="font-semibold uppercase tracking-wide text-blue-700">AI literacy readiness</div>
+          <Badge tone={useCase.oversightReview.aiLiteracyReadiness.status === "current" ? "green" : "amber"}>
+            {useCase.oversightReview.aiLiteracyReadiness.status.replace(/_/g, " ")}
+          </Badge>
+        </div>
+        <div className="mt-1 text-slate-700">
+          {useCase.oversightReview.aiLiteracyReadiness.completionRatePercent}% programme completion · {useCase.oversightReview.aiLiteracyReadiness.targetRoles.length} role groups
+        </div>
+        <div className="mt-1 text-slate-500">
+          {useCase.oversightReview.aiLiteracyReadiness.audiences.join(", ").replace(/_/g, " ")} · {useCase.oversightReview.aiLiteracyReadiness.accountableOwner}
+        </div>
+      </div>
       {useCase.oversightReview.fundamentalRightsAssessment && (
         <div className="mt-3 rounded-lg border border-indigo-100 bg-indigo-50/70 p-3 text-xs">
           <div className="flex items-center justify-between gap-2">

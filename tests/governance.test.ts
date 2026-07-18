@@ -253,6 +253,43 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("keeps AI literacy readiness role-, risk-, and evidence-specific", () => {
+    const artifactById = new Map(
+      demoComplianceReports.flatMap(report => report.evidenceArtifacts).map(artifact => [artifact.id, artifact])
+    );
+
+    for (const useCase of demoUseCaseInventory) {
+      const readiness = useCase.oversightReview.aiLiteracyReadiness;
+      expect(readiness.accountableOwner.length).toBeGreaterThan(5);
+      expect(readiness.audiences).toContain("employees");
+      expect(readiness.targetRoles.length).toBeGreaterThanOrEqual(1);
+      expect(readiness.requiredTopics.length).toBeGreaterThanOrEqual(2);
+      expect(readiness.completionRatePercent).toBeGreaterThanOrEqual(0);
+      expect(readiness.completionRatePercent).toBeLessThanOrEqual(100);
+      expect(new Date(readiness.lastDeliveredAt).toString()).not.toBe("Invalid Date");
+      expect(new Date(readiness.nextRefreshDue).getTime()).toBeGreaterThan(new Date(readiness.lastDeliveredAt).getTime());
+      expect(readiness.evidenceArtifactIds.length).toBeGreaterThanOrEqual(1);
+      expect(readiness.evidenceArtifactIds.every(artifactId => artifactById.get(artifactId)?.artifactType === "training_record")).toBe(true);
+
+      if (useCase.riskTier === "high") {
+        expect(readiness.requiredTopics.some(topic => /human oversight/i.test(topic))).toBe(true);
+      }
+    }
+  });
+
+  it("routes incomplete AI literacy coverage into active governance work", () => {
+    const readinessGaps = demoUseCaseInventory.filter(useCase => {
+      const readiness = useCase.oversightReview.aiLiteracyReadiness;
+      return readiness.status !== "current" || readiness.completionRatePercent < 90;
+    });
+
+    expect(readinessGaps.length).toBeGreaterThanOrEqual(1);
+    for (const useCase of readinessGaps) {
+      expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
+      expect(["risk_assessment", "remediation"]).toContain(useCase.workflowStatus);
+    }
+  });
+
   it("keeps fundamental rights assessments actionable and Article 27 notifications scoped", () => {
     const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
     const assessedUseCases = demoUseCaseInventory.filter(
