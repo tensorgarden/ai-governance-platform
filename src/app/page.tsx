@@ -316,6 +316,20 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
           {useCase.oversightReview.aiLiteracyReadiness.audiences.join(", ").replace(/_/g, " ")} · {useCase.oversightReview.aiLiteracyReadiness.accountableOwner}
         </div>
       </div>
+      {useCase.oversightReview.transparencyReadiness && (
+        <div className="mt-3 rounded-lg border border-cyan-100 bg-cyan-50/70 p-3 text-xs">
+          <div className="flex items-center justify-between gap-2">
+            <div className="font-semibold uppercase tracking-wide text-cyan-700">Article 50 transparency readiness</div>
+            <Badge tone={useCase.oversightReview.transparencyReadiness.status === "ready" ? "green" : "amber"}>
+              {useCase.oversightReview.transparencyReadiness.status.replace(/_/g, " ")}
+            </Badge>
+          </div>
+          <div className="mt-1 text-slate-700">
+            {useCase.oversightReview.transparencyReadiness.applicableScopes.map(scope => scope.replace(/_/g, " ")).join(", ")} · {useCase.oversightReview.transparencyReadiness.deploymentRole}
+          </div>
+          <div className="mt-1 text-slate-500">{useCase.oversightReview.transparencyReadiness.disclosureMethod}</div>
+        </div>
+      )}
       {useCase.oversightReview.fundamentalRightsAssessment && (
         <div className="mt-3 rounded-lg border border-indigo-100 bg-indigo-50/70 p-3 text-xs">
           <div className="flex items-center justify-between gap-2">
@@ -363,14 +377,21 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
 
 function UseCaseOversightSection() {
   const highRiskUseCases = demoUseCaseInventory.filter(useCase => useCase.riskTier === "high");
+  const transparencyUseCases = demoUseCaseInventory.filter(useCase => useCase.oversightReview.transparencyReadiness !== undefined);
+  const regulatedUseCases = demoUseCaseInventory.filter(
+    useCase => useCase.riskTier === "high" || useCase.oversightReview.transparencyReadiness !== undefined
+  );
   return (
     <Card>
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold text-slate-900">High-Risk Use Case Oversight</h2>
-        <Badge tone="amber">{highRiskUseCases.length} high-risk</Badge>
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <h2 className="text-lg font-bold text-slate-900">Regulated Use Case Oversight</h2>
+        <div className="flex flex-wrap justify-end gap-2">
+          <Badge tone="amber">{highRiskUseCases.length} high-risk</Badge>
+          <Badge tone="blue">{transparencyUseCases.length} Article 50</Badge>
+        </div>
       </div>
       <div className="space-y-3">
-        {highRiskUseCases.map(useCase => <UseCaseOversightCard key={useCase.id} useCase={useCase} />)}
+        {regulatedUseCases.map(useCase => <UseCaseOversightCard key={useCase.id} useCase={useCase} />)}
       </div>
     </Card>
   );

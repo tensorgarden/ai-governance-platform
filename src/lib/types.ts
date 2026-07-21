@@ -71,6 +71,21 @@ export interface AILiteracyReadiness {
   evidenceArtifactIds: string[];
 }
 
+export type Article50TransparencyStatus = "ready" | "needs_action";
+export type Article50TransparencyScope = "ai_interaction_notice" | "emotion_or_biometric_notice" | "deepfake_disclosure" | "public_interest_text_disclosure";
+
+export interface Article50TransparencyReadiness {
+  status: Article50TransparencyStatus;
+  deploymentRole: "deployer";
+  applicableScopes: Article50TransparencyScope[];
+  assessmentBasis: string;
+  humanReviewAndEditorialResponsibility: boolean;
+  disclosureMethod: string;
+  lastAssessedAt: string;
+  complianceDueAt: string;
+  evidenceArtifactIds: string[];
+}
+
 export interface AIUseCaseOversightReview {
   lastReviewedAt: string;
   reviewCadenceDays: number;
@@ -80,6 +95,7 @@ export interface AIUseCaseOversightReview {
   postMarketMonitoring: boolean;
   monitoringSignals: PostMarketMonitoringSignal[];
   aiLiteracyReadiness: AILiteracyReadiness;
+  transparencyReadiness?: Article50TransparencyReadiness;
   fundamentalRightsAssessment?: FundamentalRightsImpactAssessment;
   seriousIncidentEscalation: SeriousIncidentEscalationPlan;
 }

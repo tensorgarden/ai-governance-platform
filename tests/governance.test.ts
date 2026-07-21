@@ -290,6 +290,42 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("maps Article 50 transparency duties to evidence-backed deployer controls", () => {
+    const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
+    const reviewedUseCases = demoUseCaseInventory.filter(useCase => useCase.oversightReview.transparencyReadiness !== undefined);
+
+    expect(reviewedUseCases.length).toBeGreaterThanOrEqual(1);
+
+    for (const useCase of reviewedUseCases) {
+      const readiness = useCase.oversightReview.transparencyReadiness!;
+      expect(useCase.frameworks).toContain("EU AI Act");
+      expect(readiness.deploymentRole).toBe("deployer");
+      expect(readiness.applicableScopes.length).toBeGreaterThanOrEqual(1);
+      expect(readiness.assessmentBasis.length).toBeGreaterThan(40);
+      expect(new Date(readiness.lastAssessedAt).toString()).not.toBe("Invalid Date");
+      expect(new Date(readiness.complianceDueAt).getTime()).toBeGreaterThan(new Date(readiness.lastAssessedAt).getTime());
+      expect(readiness.evidenceArtifactIds.length).toBeGreaterThanOrEqual(1);
+      expect(readiness.evidenceArtifactIds.every(artifactId => artifactIds.has(artifactId))).toBe(true);
+
+      if (readiness.applicableScopes.includes("public_interest_text_disclosure") && !readiness.humanReviewAndEditorialResponsibility) {
+        expect(readiness.disclosureMethod).toMatch(/label|icon|disclos/i);
+      }
+    }
+  });
+
+  it("keeps unresolved Article 50 labelling work in active governance remediation", () => {
+    const readinessGaps = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.transparencyReadiness?.status === "needs_action"
+    );
+
+    expect(readinessGaps.length).toBeGreaterThanOrEqual(1);
+    for (const useCase of readinessGaps) {
+      expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
+      expect(["risk_assessment", "remediation"]).toContain(useCase.workflowStatus);
+      expect(useCase.oversightReview.transparencyReadiness!.disclosureMethod.length).toBeGreaterThan(30);
+    }
+  });
+
   it("keeps fundamental rights assessments actionable and Article 27 notifications scoped", () => {
     const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
     const assessedUseCases = demoUseCaseInventory.filter(
