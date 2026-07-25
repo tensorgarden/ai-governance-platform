@@ -326,6 +326,43 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("assigns Article 26 human oversight to trained natural persons with intervention authority", () => {
+    const highRiskEuUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
+    );
+
+    expect(highRiskEuUseCases.length).toBeGreaterThanOrEqual(2);
+    for (const useCase of highRiskEuUseCases) {
+      const assignment = useCase.oversightReview.humanOversightAssignment;
+      expect(assignment, `${useCase.id} should assign a natural person to human oversight`).toBeDefined();
+      expect(assignment!.assignedNaturalPerson.trim().split(/\s+/).length).toBeGreaterThanOrEqual(2);
+      expect(assignment!.role.length).toBeGreaterThan(10);
+      expect(assignment!.competenceEvidence).toMatch(/training|trained|certif/i);
+      expect(assignment!.interventionAuthority).toEqual(
+        expect.arrayContaining(["stop", "override", "escalate"])
+      );
+      expect(assignment!.supportChannel.length).toBeGreaterThan(20);
+    }
+  });
+
+  it("links Article 26 oversight assignments to training and risk evidence", () => {
+    const artifactById = new Map(
+      demoComplianceReports.flatMap(report => report.evidenceArtifacts).map(artifact => [artifact.id, artifact])
+    );
+    const highRiskEuUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
+    );
+
+    for (const useCase of highRiskEuUseCases) {
+      const assignment = useCase.oversightReview.humanOversightAssignment!;
+      expect(new Date(assignment.lastControlExerciseAt).toString()).not.toBe("Invalid Date");
+      expect(assignment.evidenceArtifactIds.length).toBeGreaterThanOrEqual(2);
+      expect(assignment.evidenceArtifactIds.every(artifactId => artifactById.has(artifactId))).toBe(true);
+      expect(assignment.evidenceArtifactIds.some(artifactId => artifactById.get(artifactId)?.artifactType === "training_record")).toBe(true);
+      expect(assignment.evidenceArtifactIds.some(artifactId => artifactById.get(artifactId)?.artifactType === "risk_assessment")).toBe(true);
+    }
+  });
+
   it("keeps fundamental rights assessments actionable and Article 27 notifications scoped", () => {
     const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
     const assessedUseCases = demoUseCaseInventory.filter(

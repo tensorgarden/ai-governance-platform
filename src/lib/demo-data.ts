@@ -368,6 +368,15 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         completionRatePercent: 82,
         evidenceArtifactIds: ["art_012"],
       },
+      humanOversightAssignment: {
+        assignedNaturalPerson: "Elena Kovacs",
+        role: "Senior recruitment decision reviewer",
+        competenceEvidence: "Completed Article 26 high-risk employment AI oversight training and passed the June shortlist-bias intervention drill.",
+        interventionAuthority: ["pause", "stop", "override", "escalate"],
+        supportChannel: "People Operations legal and accessibility review desk",
+        lastControlExerciseAt: "2026-06-09T13:45:00Z",
+        evidenceArtifactIds: ["art_001", "art_012"],
+      },
       fundamentalRightsAssessment: {
         status: "needs_update",
         applicabilityBasis: "voluntary",
@@ -433,6 +442,15 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         nextRefreshDue: "2026-09-10T12:00:00Z",
         completionRatePercent: 100,
         evidenceArtifactIds: ["art_012"],
+      },
+      humanOversightAssignment: {
+        assignedNaturalPerson: "Sophie Keller",
+        role: "Senior credit risk approver",
+        competenceEvidence: "Completed Article 26 high-risk financial AI oversight training and passed the June adverse-action intervention drill.",
+        interventionAuthority: ["pause", "stop", "override", "escalate"],
+        supportChannel: "Finance Risk and Legal escalation desk",
+        lastControlExerciseAt: "2026-06-09T14:00:00Z",
+        evidenceArtifactIds: ["art_001", "art_012"],
       },
       fundamentalRightsAssessment: {
         status: "current",

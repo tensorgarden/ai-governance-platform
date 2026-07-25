@@ -86,6 +86,18 @@ export interface Article50TransparencyReadiness {
   evidenceArtifactIds: string[];
 }
 
+export type HumanOversightIntervention = "pause" | "stop" | "override" | "escalate";
+
+export interface HumanOversightAssignment {
+  assignedNaturalPerson: string;
+  role: string;
+  competenceEvidence: string;
+  interventionAuthority: HumanOversightIntervention[];
+  supportChannel: string;
+  lastControlExerciseAt: string;
+  evidenceArtifactIds: string[];
+}
+
 export interface AIUseCaseOversightReview {
   lastReviewedAt: string;
   reviewCadenceDays: number;
@@ -95,6 +107,7 @@ export interface AIUseCaseOversightReview {
   postMarketMonitoring: boolean;
   monitoringSignals: PostMarketMonitoringSignal[];
   aiLiteracyReadiness: AILiteracyReadiness;
+  humanOversightAssignment?: HumanOversightAssignment;
   transparencyReadiness?: Article50TransparencyReadiness;
   fundamentalRightsAssessment?: FundamentalRightsImpactAssessment;
   seriousIncidentEscalation: SeriousIncidentEscalationPlan;

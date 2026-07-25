@@ -316,6 +316,21 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
           {useCase.oversightReview.aiLiteracyReadiness.audiences.join(", ").replace(/_/g, " ")} · {useCase.oversightReview.aiLiteracyReadiness.accountableOwner}
         </div>
       </div>
+      {useCase.oversightReview.humanOversightAssignment && (
+        <div className="mt-3 rounded-lg border border-emerald-100 bg-emerald-50/70 p-3 text-xs">
+          <div className="flex items-center justify-between gap-2">
+            <div className="font-semibold uppercase tracking-wide text-emerald-700">Article 26 human oversight</div>
+            <Badge tone="green">assigned</Badge>
+          </div>
+          <div className="mt-1 text-slate-700">
+            {useCase.oversightReview.humanOversightAssignment.assignedNaturalPerson} · {useCase.oversightReview.humanOversightAssignment.role}
+          </div>
+          <div className="mt-1 text-slate-500">
+            Authority: {useCase.oversightReview.humanOversightAssignment.interventionAuthority.join(", ")}
+          </div>
+          <div className="mt-1 text-slate-500">Support: {useCase.oversightReview.humanOversightAssignment.supportChannel}</div>
+        </div>
+      )}
       {useCase.oversightReview.transparencyReadiness && (
         <div className="mt-3 rounded-lg border border-cyan-100 bg-cyan-50/70 p-3 text-xs">
           <div className="flex items-center justify-between gap-2">
