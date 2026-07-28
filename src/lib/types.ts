@@ -98,6 +98,21 @@ export interface HumanOversightAssignment {
   evidenceArtifactIds: string[];
 }
 
+export type DeployerLogRetentionStatus = "ready" | "needs_action";
+export type DeployerLogControlCoverage = "complete" | "partial";
+
+export interface DeployerLogRetentionReadiness {
+  status: DeployerLogRetentionStatus;
+  controlCoverage: DeployerLogControlCoverage;
+  configuredRetentionMonths: number;
+  coveredLogSources: string[];
+  missingLogSources: string[];
+  archiveOwner: string;
+  lastVerifiedAt: string;
+  remediationDueAt?: string;
+  evidenceArtifactIds: string[];
+}
+
 export interface AIUseCaseOversightReview {
   lastReviewedAt: string;
   reviewCadenceDays: number;
@@ -108,6 +123,7 @@ export interface AIUseCaseOversightReview {
   monitoringSignals: PostMarketMonitoringSignal[];
   aiLiteracyReadiness: AILiteracyReadiness;
   humanOversightAssignment?: HumanOversightAssignment;
+  deployerLogRetention?: DeployerLogRetentionReadiness;
   transparencyReadiness?: Article50TransparencyReadiness;
   fundamentalRightsAssessment?: FundamentalRightsImpactAssessment;
   seriousIncidentEscalation: SeriousIncidentEscalationPlan;

@@ -331,6 +331,24 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
           <div className="mt-1 text-slate-500">Support: {useCase.oversightReview.humanOversightAssignment.supportChannel}</div>
         </div>
       )}
+      {useCase.oversightReview.deployerLogRetention && (
+        <div className="mt-3 rounded-lg border border-violet-100 bg-violet-50/70 p-3 text-xs">
+          <div className="flex items-center justify-between gap-2">
+            <div className="font-semibold uppercase tracking-wide text-violet-700">Article 26 automatic-log retention</div>
+            <Badge tone={useCase.oversightReview.deployerLogRetention.status === "ready" ? "green" : "amber"}>
+              {useCase.oversightReview.deployerLogRetention.status.replace(/_/g, " ")}
+            </Badge>
+          </div>
+          <div className="mt-1 text-slate-700">
+            {useCase.oversightReview.deployerLogRetention.configuredRetentionMonths} month retention · {useCase.oversightReview.deployerLogRetention.coveredLogSources.length} covered log streams
+          </div>
+          <div className="mt-1 text-slate-500">
+            {useCase.oversightReview.deployerLogRetention.controlCoverage === "complete"
+              ? `Verified under deployer control · ${useCase.oversightReview.deployerLogRetention.archiveOwner}`
+              : `${useCase.oversightReview.deployerLogRetention.missingLogSources.length} missing stream · remediation due ${new Date(useCase.oversightReview.deployerLogRetention.remediationDueAt!).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`}
+          </div>
+        </div>
+      )}
       {useCase.oversightReview.transparencyReadiness && (
         <div className="mt-3 rounded-lg border border-cyan-100 bg-cyan-50/70 p-3 text-xs">
           <div className="flex items-center justify-between gap-2">

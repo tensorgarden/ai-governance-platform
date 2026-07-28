@@ -363,6 +363,54 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("keeps Article 26 automatic logs under deployer control for at least six months", () => {
+    const artifactById = new Map(
+      demoComplianceReports.flatMap(report => report.evidenceArtifacts).map(artifact => [artifact.id, artifact])
+    );
+    const regulatedUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
+    );
+
+    expect(regulatedUseCases.length).toBeGreaterThanOrEqual(2);
+    for (const useCase of regulatedUseCases) {
+      const retention = useCase.oversightReview.deployerLogRetention;
+      expect(retention, `${useCase.id} should document deployer log retention`).toBeDefined();
+      expect(retention!.configuredRetentionMonths).toBeGreaterThanOrEqual(6);
+      expect(retention!.coveredLogSources.length).toBeGreaterThanOrEqual(1);
+      expect(retention!.archiveOwner.length).toBeGreaterThan(10);
+      expect(new Date(retention!.lastVerifiedAt).toString()).not.toBe("Invalid Date");
+      expect(retention!.evidenceArtifactIds.length).toBeGreaterThanOrEqual(1);
+      expect(retention!.evidenceArtifactIds.every(artifactId => artifactById.get(artifactId)?.artifactType === "audit_log")).toBe(true);
+    }
+  });
+
+  it("routes deployer log-control gaps into time-bound governance work", () => {
+    const readinessGaps = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.deployerLogRetention?.status === "needs_action"
+    );
+    const readyUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.deployerLogRetention?.status === "ready"
+    );
+
+    expect(readinessGaps.length).toBeGreaterThanOrEqual(1);
+    expect(readyUseCases.length).toBeGreaterThanOrEqual(1);
+
+    for (const useCase of readinessGaps) {
+      const retention = useCase.oversightReview.deployerLogRetention!;
+      expect(retention.controlCoverage).toBe("partial");
+      expect(retention.missingLogSources.length).toBeGreaterThanOrEqual(1);
+      expect(new Date(retention.remediationDueAt!).getTime()).toBeGreaterThan(new Date(retention.lastVerifiedAt).getTime());
+      expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
+      expect(["risk_assessment", "remediation"]).toContain(useCase.workflowStatus);
+    }
+
+    for (const useCase of readyUseCases) {
+      const retention = useCase.oversightReview.deployerLogRetention!;
+      expect(retention.controlCoverage).toBe("complete");
+      expect(retention.missingLogSources).toHaveLength(0);
+    }
+  });
+
   it("keeps fundamental rights assessments actionable and Article 27 notifications scoped", () => {
     const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
     const assessedUseCases = demoUseCaseInventory.filter(

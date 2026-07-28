@@ -163,6 +163,7 @@ export const demoComplianceReports: ComplianceReport[] = [
       { id: "art_011", framework: "EU AI Act", control: "Article 27 fundamental rights impact assessment, affected-group review, and complaint pathway evidence", artifactType: "risk_assessment", owner: "Legal & Human Rights Review", collectedAt: "2026-06-10T15:30:00Z", retention: "10 years", status: "current" },
       { id: "art_012", framework: "EU AI Act", control: "Article 4 role-, risk-, and deployment-context-specific AI literacy programme delivery records", artifactType: "training_record", owner: "Learning & AI Governance", collectedAt: "2026-06-11T11:20:00Z", retention: "7 years", status: "current" },
       { id: "art_013", framework: "EU AI Act", control: "Article 50 deployer applicability, public-interest text label placement, and editorial-responsibility review", artifactType: "review_record", owner: "Marketing Compliance", collectedAt: "2026-07-20T10:00:00Z", retention: "7 years", status: "needs_review" },
+      { id: "art_014", framework: "EU AI Act", control: "Article 26 deployer-controlled automatic-log coverage and minimum retention verification", artifactType: "audit_log", owner: "AI Records Governance", collectedAt: "2026-07-24T14:20:00Z", retention: "7 years", status: "current" },
     ],
   },
   {
@@ -377,6 +378,17 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         lastControlExerciseAt: "2026-06-09T13:45:00Z",
         evidenceArtifactIds: ["art_001", "art_012"],
       },
+      deployerLogRetention: {
+        status: "needs_action",
+        controlCoverage: "partial",
+        configuredRetentionMonths: 6,
+        coveredLogSources: ["Candidate scores", "Recruiter overrides", "Final screening decisions"],
+        missingLogSources: ["Provider inference trace export"],
+        archiveOwner: "People Data Governance",
+        lastVerifiedAt: "2026-07-24T13:30:00Z",
+        remediationDueAt: "2026-08-01T17:00:00Z",
+        evidenceArtifactIds: ["art_014"],
+      },
       fundamentalRightsAssessment: {
         status: "needs_update",
         applicabilityBasis: "voluntary",
@@ -451,6 +463,16 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         supportChannel: "Finance Risk and Legal escalation desk",
         lastControlExerciseAt: "2026-06-09T14:00:00Z",
         evidenceArtifactIds: ["art_001", "art_012"],
+      },
+      deployerLogRetention: {
+        status: "ready",
+        controlCoverage: "complete",
+        configuredRetentionMonths: 84,
+        coveredLogSources: ["Recommendation input hashes", "Model outputs", "Human approval and override events"],
+        missingLogSources: [],
+        archiveOwner: "Financial AI Records Office",
+        lastVerifiedAt: "2026-07-24T14:00:00Z",
+        evidenceArtifactIds: ["art_014"],
       },
       fundamentalRightsAssessment: {
         status: "current",
