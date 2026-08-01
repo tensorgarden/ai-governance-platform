@@ -411,6 +411,51 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("documents relevant and representative input data under deployer control", () => {
+    const artifactById = new Map(
+      demoComplianceReports.flatMap(report => report.evidenceArtifacts).map(artifact => [artifact.id, artifact])
+    );
+    const regulatedUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
+    );
+
+    expect(regulatedUseCases.length).toBeGreaterThanOrEqual(2);
+    for (const useCase of regulatedUseCases) {
+      const readiness = useCase.oversightReview.inputDataReadiness;
+      expect(readiness, `${useCase.id} should document input-data readiness`).toBeDefined();
+      expect(readiness!.assessedDatasets.length).toBeGreaterThanOrEqual(1);
+      expect(readiness!.relevanceBasis.length).toBeGreaterThan(40);
+      expect(readiness!.representativenessChecks.length).toBeGreaterThanOrEqual(2);
+      expect(readiness!.dataOwner.length).toBeGreaterThan(10);
+      expect(new Date(readiness!.lastVerifiedAt).toString()).not.toBe("Invalid Date");
+      expect(readiness!.evidenceArtifactIds.some(artifactId => artifactById.get(artifactId)?.artifactType === "risk_assessment")).toBe(true);
+    }
+  });
+
+  it("keeps unresolved input-data gaps in time-bound governance work", () => {
+    const gaps = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.inputDataReadiness?.status === "needs_action"
+    );
+    const ready = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.inputDataReadiness?.status === "ready"
+    );
+
+    expect(gaps.length).toBeGreaterThanOrEqual(1);
+    expect(ready.length).toBeGreaterThanOrEqual(1);
+    for (const useCase of gaps) {
+      const readiness = useCase.oversightReview.inputDataReadiness!;
+      expect(readiness.controlCoverage).toBe("partial");
+      expect(readiness.unresolvedGaps.length).toBeGreaterThanOrEqual(1);
+      expect(new Date(readiness.remediationDueAt!).getTime()).toBeGreaterThan(new Date(readiness.lastVerifiedAt).getTime());
+      expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
+      expect(["risk_assessment", "remediation"]).toContain(useCase.workflowStatus);
+    }
+    for (const useCase of ready) {
+      expect(useCase.oversightReview.inputDataReadiness!.controlCoverage).toBe("complete");
+      expect(useCase.oversightReview.inputDataReadiness!.unresolvedGaps).toHaveLength(0);
+    }
+  });
+
   it("keeps fundamental rights assessments actionable and Article 27 notifications scoped", () => {
     const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
     const assessedUseCases = demoUseCaseInventory.filter(

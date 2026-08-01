@@ -113,6 +113,22 @@ export interface DeployerLogRetentionReadiness {
   evidenceArtifactIds: string[];
 }
 
+export type InputDataReadinessStatus = "ready" | "needs_action";
+export type InputDataControlCoverage = "complete" | "partial";
+
+export interface InputDataReadiness {
+  status: InputDataReadinessStatus;
+  controlCoverage: InputDataControlCoverage;
+  assessedDatasets: string[];
+  relevanceBasis: string;
+  representativenessChecks: string[];
+  unresolvedGaps: string[];
+  dataOwner: string;
+  lastVerifiedAt: string;
+  remediationDueAt?: string;
+  evidenceArtifactIds: string[];
+}
+
 export interface AIUseCaseOversightReview {
   lastReviewedAt: string;
   reviewCadenceDays: number;
@@ -124,6 +140,7 @@ export interface AIUseCaseOversightReview {
   aiLiteracyReadiness: AILiteracyReadiness;
   humanOversightAssignment?: HumanOversightAssignment;
   deployerLogRetention?: DeployerLogRetentionReadiness;
+  inputDataReadiness?: InputDataReadiness;
   transparencyReadiness?: Article50TransparencyReadiness;
   fundamentalRightsAssessment?: FundamentalRightsImpactAssessment;
   seriousIncidentEscalation: SeriousIncidentEscalationPlan;

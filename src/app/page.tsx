@@ -349,6 +349,24 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
           </div>
         </div>
       )}
+      {useCase.oversightReview.inputDataReadiness && (
+        <div className="mt-3 rounded-lg border border-orange-100 bg-orange-50/70 p-3 text-xs">
+          <div className="flex items-center justify-between gap-2">
+            <div className="font-semibold uppercase tracking-wide text-orange-700">Article 26 input-data readiness</div>
+            <Badge tone={useCase.oversightReview.inputDataReadiness.status === "ready" ? "green" : "amber"}>
+              {useCase.oversightReview.inputDataReadiness.status.replace(/_/g, " ")}
+            </Badge>
+          </div>
+          <div className="mt-1 text-slate-700">
+            {useCase.oversightReview.inputDataReadiness.assessedDatasets.length} assessed datasets · {useCase.oversightReview.inputDataReadiness.representativenessChecks.length} representativeness checks
+          </div>
+          <div className="mt-1 text-slate-500">
+            {useCase.oversightReview.inputDataReadiness.controlCoverage === "complete"
+              ? `Verified under deployer control · ${useCase.oversightReview.inputDataReadiness.dataOwner}`
+              : `${useCase.oversightReview.inputDataReadiness.unresolvedGaps.length} unresolved gap · remediation due ${new Date(useCase.oversightReview.inputDataReadiness.remediationDueAt!).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`}
+          </div>
+        </div>
+      )}
       {useCase.oversightReview.transparencyReadiness && (
         <div className="mt-3 rounded-lg border border-cyan-100 bg-cyan-50/70 p-3 text-xs">
           <div className="flex items-center justify-between gap-2">
