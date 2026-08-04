@@ -129,6 +129,20 @@ export interface InputDataReadiness {
   evidenceArtifactIds: string[];
 }
 
+export type AffectedPersonNotificationStatus = "ready" | "needs_action";
+
+export interface AffectedPersonNotificationReadiness {
+  status: AffectedPersonNotificationStatus;
+  notificationChannel: string;
+  informedBeforeDecision: boolean;
+  noticeLanguageReview: string;
+  affectedGroups: string[];
+  sampledNoticeDeliveryRatePercent: number;
+  lastVerifiedAt: string;
+  remediationDueAt?: string;
+  evidenceArtifactIds: string[];
+}
+
 export interface AIUseCaseOversightReview {
   lastReviewedAt: string;
   reviewCadenceDays: number;
@@ -141,6 +155,7 @@ export interface AIUseCaseOversightReview {
   humanOversightAssignment?: HumanOversightAssignment;
   deployerLogRetention?: DeployerLogRetentionReadiness;
   inputDataReadiness?: InputDataReadiness;
+  affectedPersonNotification?: AffectedPersonNotificationReadiness;
   transparencyReadiness?: Article50TransparencyReadiness;
   fundamentalRightsAssessment?: FundamentalRightsImpactAssessment;
   seriousIncidentEscalation: SeriousIncidentEscalationPlan;

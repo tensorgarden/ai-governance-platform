@@ -367,6 +367,24 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
           </div>
         </div>
       )}
+      {useCase.oversightReview.affectedPersonNotification && (
+        <div className="mt-3 rounded-lg border border-rose-100 bg-rose-50/70 p-3 text-xs">
+          <div className="flex items-center justify-between gap-2">
+            <div className="font-semibold uppercase tracking-wide text-rose-700">Article 26(11) affected-person notice</div>
+            <Badge tone={useCase.oversightReview.affectedPersonNotification.status === "ready" ? "green" : "amber"}>
+              {useCase.oversightReview.affectedPersonNotification.status.replace(/_/g, " ")}
+            </Badge>
+          </div>
+          <div className="mt-1 text-slate-700">
+            {useCase.oversightReview.affectedPersonNotification.sampledNoticeDeliveryRatePercent}% sampled delivery · {useCase.oversightReview.affectedPersonNotification.informedBeforeDecision ? "notice before decision" : "pre-decision timing not yet verified"}
+          </div>
+          <div className="mt-1 text-slate-500">
+            {useCase.oversightReview.affectedPersonNotification.status === "ready"
+              ? useCase.oversightReview.affectedPersonNotification.notificationChannel
+              : `${useCase.oversightReview.affectedPersonNotification.notificationChannel} · remediation due ${new Date(useCase.oversightReview.affectedPersonNotification.remediationDueAt!).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`}
+          </div>
+        </div>
+      )}
       {useCase.oversightReview.transparencyReadiness && (
         <div className="mt-3 rounded-lg border border-cyan-100 bg-cyan-50/70 p-3 text-xs">
           <div className="flex items-center justify-between gap-2">

@@ -165,6 +165,7 @@ export const demoComplianceReports: ComplianceReport[] = [
       { id: "art_013", framework: "EU AI Act", control: "Article 50 deployer applicability, public-interest text label placement, and editorial-responsibility review", artifactType: "review_record", owner: "Marketing Compliance", collectedAt: "2026-07-20T10:00:00Z", retention: "7 years", status: "needs_review" },
       { id: "art_014", framework: "EU AI Act", control: "Article 26 deployer-controlled automatic-log coverage and minimum retention verification", artifactType: "audit_log", owner: "AI Records Governance", collectedAt: "2026-07-24T14:20:00Z", retention: "7 years", status: "current" },
       { id: "art_015", framework: "EU AI Act", control: "Article 26 deployer-controlled input-data relevance and representativeness review", artifactType: "risk_assessment", owner: "AI Data Governance", collectedAt: "2026-07-30T15:10:00Z", retention: "10 years", status: "current" },
+      { id: "art_016", framework: "EU AI Act", control: "Article 26(11) affected-person notification templates, pre-decision timing verification, and delivery sampling", artifactType: "review_record", owner: "Legal & Compliance Review", collectedAt: "2026-08-01T10:30:00Z", retention: "10 years", status: "current" },
     ],
   },
   {
@@ -402,6 +403,17 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         remediationDueAt: "2026-08-12T17:00:00Z",
         evidenceArtifactIds: ["art_001", "art_015"],
       },
+      affectedPersonNotification: {
+        status: "needs_action",
+        notificationChannel: "Application portal pre-screening disclosure and tracked candidate email notice",
+        informedBeforeDecision: false,
+        noticeLanguageReview: "Plain-language and accessibility review completed for the English notice; localized versions still pending sign-off.",
+        affectedGroups: ["Job applicants", "Candidates requiring workplace accommodations"],
+        sampledNoticeDeliveryRatePercent: 78,
+        lastVerifiedAt: "2026-08-01T10:30:00Z",
+        remediationDueAt: "2026-08-15T17:00:00Z",
+        evidenceArtifactIds: ["art_016"],
+      },
       fundamentalRightsAssessment: {
         status: "needs_update",
         applicabilityBasis: "voluntary",
@@ -497,6 +509,16 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         dataOwner: "Finance Data Stewardship",
         lastVerifiedAt: "2026-07-30T15:00:00Z",
         evidenceArtifactIds: ["art_001", "art_015"],
+      },
+      affectedPersonNotification: {
+        status: "ready",
+        notificationChannel: "Pre-application disclosure with tracked acknowledgement inside the credit portal",
+        informedBeforeDecision: true,
+        noticeLanguageReview: "Plain-language, accessibility, and German-market localization review signed off by Legal.",
+        affectedGroups: ["Small-business credit applicants", "Applicants using accessibility accommodations"],
+        sampledNoticeDeliveryRatePercent: 100,
+        lastVerifiedAt: "2026-08-01T11:00:00Z",
+        evidenceArtifactIds: ["art_016"],
       },
       fundamentalRightsAssessment: {
         status: "current",
