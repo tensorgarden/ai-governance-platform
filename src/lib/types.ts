@@ -236,7 +236,7 @@ export interface SafetyCheck {
   id: string;
   timestamp: string;
   toolName: string;
-  checkType: "prompt_injection" | "pii_leak" | "toxic_output" | "hallucination" | "data_exfiltration" | "bias_detection" | "agent_action" | "model_provenance";
+  checkType: "prompt_injection" | "pii_leak" | "toxic_output" | "hallucination" | "data_exfiltration" | "bias_detection" | "agent_action" | "model_provenance" | "audit_completeness";
   severity: Severity;
   status: "passed" | "flagged" | "blocked";
   detail: string;

@@ -223,6 +223,7 @@ export const demoSafetyChecks: SafetyCheck[] = [
   { id: "saf_017", timestamp: "2026-06-09T11:40:00Z", toolName: "chatgpt", checkType: "agent_action", severity: "critical", status: "blocked", detail: "Production infra mutation blocked — autonomous write to firewall rules without change control", userId: "usr_008" },
   { id: "saf_018", timestamp: "2026-06-09T12:05:00Z", toolName: "claude", checkType: "model_provenance", severity: "low", status: "passed", detail: "Anthropic vendor registry verified — no CVSS changes since last quarterly review", userId: "usr_015" },
   { id: "saf_019", timestamp: "2026-06-09T12:32:00Z", toolName: "gemini", checkType: "model_provenance", severity: "critical", status: "blocked", detail: "Unregistered model endpoint — gemini-fine-tune not in supply chain registry", userId: "usr_016" },
+  { id: "saf_020", timestamp: "2026-06-09T13:18:00Z", toolName: "claude", checkType: "audit_completeness", severity: "critical", status: "blocked", detail: "Audit trail coverage gap: missing log source 'Provider inference trace export' for AI recruiting use case — blocking further HR AI tool mutations until remediation deadline 2026-08-01 is met", userId: "usr_017" },
 ];
 
 export const demoTeamAccess: TeamAccess[] = [

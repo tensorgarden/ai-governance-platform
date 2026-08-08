@@ -50,7 +50,7 @@ describe("AI Governance Platform — demo data integrity", () => {
 
   it("safety checks have valid statuses and check types", () => {
     const validStatuses = ["passed", "flagged", "blocked"];
-    const validCheckTypes = ["prompt_injection", "pii_leak", "toxic_output", "hallucination", "data_exfiltration", "bias_detection", "agent_action", "model_provenance"];
+    const validCheckTypes = ["prompt_injection", "pii_leak", "toxic_output", "hallucination", "data_exfiltration", "bias_detection", "agent_action", "model_provenance", "audit_completeness"];
     for (const check of demoSafetyChecks) {
       expect(validStatuses).toContain(check.status);
       expect(validCheckTypes).toContain(check.checkType);
@@ -142,6 +142,14 @@ describe("AI Governance Platform — demo data integrity", () => {
         `Blocked agent action event ${event.id} should have a blocked agent_action safety check`
       ).toBe(true);
     }
+  });
+
+  it("blocks HR AI tool mutations when audit trail log sources are incomplete", () => {
+    const auditCompletenessCheck = demoSafetyChecks.find(check => check.checkType === "audit_completeness");
+    expect(auditCompletenessCheck).toBeDefined();
+    expect(auditCompletenessCheck?.status).toBe("blocked");
+    expect(auditCompletenessCheck?.severity).toBe("critical");
+    expect(auditCompletenessCheck?.detail).toMatch(/log source|Provider inference trace export|remediation deadline/i);
   });
 
   it("models supply chain integrity for third-party and open-source AI models", () => {
