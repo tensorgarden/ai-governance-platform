@@ -348,18 +348,19 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
     lastRiskAssessmentAt: "2026-06-06T14:30:00Z",
     nextReviewDue: "2026-07-06T14:30:00Z",
     humanOversightRequired: true,
-    workflowStatus: "risk_assessment",
+    workflowStatus: "suspended",
     reviewerRoles: ["business_owner", "legal", "compliance", "ethics"],
     oversightReview: {
       lastReviewedAt: "2026-06-06T14:30:00Z",
       reviewCadenceDays: 30,
       escalationOwner: "People Operations AI Review Board",
-      openFindings: 2,
+      openFindings: 3,
       evidenceArtifactIds: ["art_001", "art_002"],
       postMarketMonitoring: true,
       monitoringSignals: [
-        { id: "sig_002", name: "Adverse impact ratio delta", status: "watch", lastCheckedAt: "2026-06-09T09:00:00Z", threshold: "< 5% swing across protected-class proxy groups", observedValue: "6.8% swing in senior engineering sample", correctiveActionDue: "2026-06-16T17:00:00Z", evidenceArtifactIds: ["art_001", "art_009"] },
+        { id: "sig_002", name: "Adverse impact ratio delta", status: "breach", lastCheckedAt: "2026-06-09T09:00:00Z", threshold: "< 5% swing across protected-class proxy groups", observedValue: "11.4% swing in senior engineering sample, crossing the 5% threshold", correctiveActionDue: "2026-06-12T17:00:00Z", evidenceArtifactIds: ["art_001", "art_009"] },
         { id: "sig_003", name: "Recruiter override review coverage", status: "green", lastCheckedAt: "2026-06-09T09:15:00Z", threshold: "100% AI-ranked shortlists sampled by accountable recruiter", observedValue: "100% sampled with named reviewer", evidenceArtifactIds: ["art_002"] },
+        { id: "sig_007", name: "Protected-class parity audit — senior engineering", status: "breach", lastCheckedAt: "2026-06-11T11:00:00Z", threshold: "Selection rate within 80% of the most-selected group across all protected-class proxies", observedValue: "71% parity in senior engineering sample; system use suspended pending investigation", correctiveActionDue: "2026-06-18T17:00:00Z", evidenceArtifactIds: ["art_001", "art_009"] },
       ],
       aiLiteracyReadiness: {
         status: "needs_refresh",

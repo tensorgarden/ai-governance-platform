@@ -294,7 +294,7 @@ describe("AI Governance Platform — demo data integrity", () => {
     expect(readinessGaps.length).toBeGreaterThanOrEqual(1);
     for (const useCase of readinessGaps) {
       expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
-      expect(["risk_assessment", "remediation"]).toContain(useCase.workflowStatus);
+      expect(["risk_assessment", "remediation", "suspended"]).toContain(useCase.workflowStatus);
     }
   });
 
@@ -329,7 +329,7 @@ describe("AI Governance Platform — demo data integrity", () => {
     expect(readinessGaps.length).toBeGreaterThanOrEqual(1);
     for (const useCase of readinessGaps) {
       expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
-      expect(["risk_assessment", "remediation"]).toContain(useCase.workflowStatus);
+      expect(["risk_assessment", "remediation", "suspended"]).toContain(useCase.workflowStatus);
       expect(useCase.oversightReview.transparencyReadiness!.disclosureMethod.length).toBeGreaterThan(30);
     }
   });
@@ -409,7 +409,7 @@ describe("AI Governance Platform — demo data integrity", () => {
       expect(retention.missingLogSources.length).toBeGreaterThanOrEqual(1);
       expect(new Date(retention.remediationDueAt!).getTime()).toBeGreaterThan(new Date(retention.lastVerifiedAt).getTime());
       expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
-      expect(["risk_assessment", "remediation"]).toContain(useCase.workflowStatus);
+      expect(["risk_assessment", "remediation", "suspended"]).toContain(useCase.workflowStatus);
     }
 
     for (const useCase of readyUseCases) {
@@ -456,7 +456,7 @@ describe("AI Governance Platform — demo data integrity", () => {
       expect(readiness.unresolvedGaps.length).toBeGreaterThanOrEqual(1);
       expect(new Date(readiness.remediationDueAt!).getTime()).toBeGreaterThan(new Date(readiness.lastVerifiedAt).getTime());
       expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
-      expect(["risk_assessment", "remediation"]).toContain(useCase.workflowStatus);
+      expect(["risk_assessment", "remediation", "suspended"]).toContain(useCase.workflowStatus);
     }
     for (const useCase of ready) {
       expect(useCase.oversightReview.inputDataReadiness!.controlCoverage).toBe("complete");
@@ -502,7 +502,7 @@ describe("AI Governance Platform — demo data integrity", () => {
       const notice = useCase.oversightReview.affectedPersonNotification!;
       expect(new Date(notice.remediationDueAt!).getTime()).toBeGreaterThan(new Date(notice.lastVerifiedAt).getTime());
       expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
-      expect(["risk_assessment", "remediation"]).toContain(useCase.workflowStatus);
+      expect(["risk_assessment", "remediation", "suspended"]).toContain(useCase.workflowStatus);
     }
 
     for (const useCase of ready) {
@@ -538,7 +538,7 @@ describe("AI Governance Platform — demo data integrity", () => {
       }
 
       if (assessment.status === "needs_update") {
-        expect(useCase.workflowStatus).toBe("risk_assessment");
+        expect(["risk_assessment", "suspended"]).toContain(useCase.workflowStatus);
         expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
       }
     }
@@ -644,6 +644,37 @@ describe("AI Governance Platform — demo data integrity", () => {
       expect(daysUntilNextReview).toBeGreaterThan(0);
       expect(daysUntilNextReview).toBeLessThanOrEqual(review.reviewCadenceDays + 1);
       expect(useCase.humanOversightRequired).toBe(true);
+    }
+  });
+
+  it("escalates breach monitoring signals to a non-operational workflow status", () => {
+    const breachedUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.monitoringSignals.some(signal => signal.status === "breach")
+    );
+
+    expect(breachedUseCases.length).toBeGreaterThanOrEqual(1);
+
+    for (const useCase of breachedUseCases) {
+      expect(["suspended", "remediation"]).toContain(useCase.workflowStatus);
+      expect(useCase.oversightReview.openFindings).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it("requires deployer suspension when fundamental-rights risks breach monitoring thresholds", () => {
+    const highRiskBreached = demoUseCaseInventory.filter(
+      useCase =>
+        useCase.riskTier === "high" &&
+        useCase.frameworks.includes("EU AI Act") &&
+        useCase.oversightReview.monitoringSignals.some(signal => signal.status === "breach")
+    );
+
+    expect(highRiskBreached.length).toBeGreaterThanOrEqual(1);
+
+    for (const useCase of highRiskBreached) {
+      expect(useCase.workflowStatus).toBe("suspended");
+      expect(useCase.humanOversightRequired).toBe(true);
+      expect(useCase.oversightReview.seriousIncidentEscalation.acceleratedWindowHours).toBeDefined();
+      expect(useCase.oversightReview.seriousIncidentEscalation.acceleratedWindowHours!).toBeLessThanOrEqual(48);
     }
   });
 
