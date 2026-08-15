@@ -56,6 +56,20 @@ export interface FundamentalRightsImpactAssessment {
   evidenceArtifactIds: string[];
 }
 
+export type SubstantialModificationAssessmentStatus = "current" | "needs_review";
+export type SubstantialModificationConclusion = "no_substantial_modification" | "substantial_modification";
+
+export interface SubstantialModificationAssessment {
+  status: SubstantialModificationAssessmentStatus;
+  assessedChange: string;
+  intendedPurposeImpact: string;
+  conclusion: SubstantialModificationConclusion;
+  providerDutiesTriggered: string[];
+  accountableOwner: string;
+  lastAssessedAt: string;
+  evidenceArtifactIds: string[];
+}
+
 export type AILiteracyReadinessStatus = "current" | "needs_refresh" | "planned";
 export type AILiteracyAudience = "employees" | "contractors" | "service_providers";
 
@@ -158,6 +172,7 @@ export interface AIUseCaseOversightReview {
   affectedPersonNotification?: AffectedPersonNotificationReadiness;
   transparencyReadiness?: Article50TransparencyReadiness;
   fundamentalRightsAssessment?: FundamentalRightsImpactAssessment;
+  substantialModificationAssessment?: SubstantialModificationAssessment;
   seriousIncidentEscalation: SeriousIncidentEscalationPlan;
 }
 

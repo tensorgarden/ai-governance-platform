@@ -166,6 +166,7 @@ export const demoComplianceReports: ComplianceReport[] = [
       { id: "art_014", framework: "EU AI Act", control: "Article 26 deployer-controlled automatic-log coverage and minimum retention verification", artifactType: "audit_log", owner: "AI Records Governance", collectedAt: "2026-07-24T14:20:00Z", retention: "7 years", status: "current" },
       { id: "art_015", framework: "EU AI Act", control: "Article 26 deployer-controlled input-data relevance and representativeness review", artifactType: "risk_assessment", owner: "AI Data Governance", collectedAt: "2026-07-30T15:10:00Z", retention: "10 years", status: "current" },
       { id: "art_016", framework: "EU AI Act", control: "Article 26(11) affected-person notification templates, pre-decision timing verification, and delivery sampling", artifactType: "review_record", owner: "Legal & Compliance Review", collectedAt: "2026-08-01T10:30:00Z", retention: "10 years", status: "current" },
+      { id: "art_017", framework: "EU AI Act", control: "Article 25 substantial-modification assessment, provider-duty trigger review, and intended-purpose change analysis", artifactType: "risk_assessment", owner: "AI Safety Board", collectedAt: "2026-08-12T10:15:00Z", retention: "10 years", status: "current" },
     ],
   },
   {
@@ -428,6 +429,16 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         marketAuthorityNotifiedAt: "2026-06-06T16:10:00Z",
         evidenceArtifactIds: ["art_001", "art_011"],
       },
+      substantialModificationAssessment: {
+        status: "needs_review",
+        assessedChange: "Deployer-added ranking weights and interview-score synthesis beyond the provider's conformity-assessed intended purpose.",
+        intendedPurposeImpact: "Recruiter-facing recommendations now shape interview shortlisting, a purpose not assessed in the provider's conformity documentation.",
+        conclusion: "substantial_modification",
+        providerDutiesTriggered: ["Conformity assessment", "EU database registration", "Technical documentation", "Quality management system"],
+        accountableOwner: "People Operations AI Review Board",
+        lastAssessedAt: "2026-08-12T09:30:00Z",
+        evidenceArtifactIds: ["art_001", "art_017"],
+      },
       seriousIncidentEscalation: {
         playbookOwner: "People Operations AI Review Board",
         marketAuthority: "Irish Market Surveillance Authority",
@@ -533,6 +544,16 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         updateTrigger: "Reassess after a material model, data-source, affected-group, or deployment-context change.",
         marketAuthorityNotifiedAt: "2026-06-10T16:00:00Z",
         evidenceArtifactIds: ["art_001", "art_011"],
+      },
+      substantialModificationAssessment: {
+        status: "current",
+        assessedChange: "Risk-threshold and approval-route configuration only, within the provider's documented instructions of use.",
+        intendedPurposeImpact: "Credit-line recommendation drafting remains the assessed purpose; no new decision scope added.",
+        conclusion: "no_substantial_modification",
+        providerDutiesTriggered: [],
+        accountableOwner: "Finance Risk Committee",
+        lastAssessedAt: "2026-08-12T10:00:00Z",
+        evidenceArtifactIds: ["art_001", "art_017"],
       },
       seriousIncidentEscalation: {
         playbookOwner: "Finance Risk Committee",

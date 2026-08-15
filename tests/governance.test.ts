@@ -679,4 +679,55 @@ describe("AI Governance Platform — demo data integrity", () => {
   });
 
 
+  it("assesses Article 25 substantial modification before continued high-risk operation", () => {
+    const artifactById = new Map(
+      demoComplianceReports.flatMap(report => report.evidenceArtifacts).map(artifact => [artifact.id, artifact])
+    );
+    const regulatedUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
+    );
+
+    expect(regulatedUseCases.length).toBeGreaterThanOrEqual(2);
+    for (const useCase of regulatedUseCases) {
+      const assessment = useCase.oversightReview.substantialModificationAssessment;
+      expect(assessment, `${useCase.id} should document an Article 25 substantial-modification assessment`).toBeDefined();
+      expect(assessment!.assessedChange.length).toBeGreaterThan(40);
+      expect(assessment!.intendedPurposeImpact.length).toBeGreaterThan(40);
+      expect(["no_substantial_modification", "substantial_modification"]).toContain(assessment!.conclusion);
+      expect(assessment!.accountableOwner.length).toBeGreaterThan(10);
+      expect(new Date(assessment!.lastAssessedAt).toString()).not.toBe("Invalid Date");
+      expect(assessment!.evidenceArtifactIds.length).toBeGreaterThanOrEqual(1);
+      expect(assessment!.evidenceArtifactIds.every(artifactId => artifactById.get(artifactId)?.artifactType === "risk_assessment")).toBe(true);
+    }
+  });
+
+  it("blocks operation when a substantial modification triggers provider duties", () => {
+    const modifiedUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.substantialModificationAssessment?.conclusion === "substantial_modification"
+    );
+
+    expect(modifiedUseCases.length).toBeGreaterThanOrEqual(1);
+    for (const useCase of modifiedUseCases) {
+      const assessment = useCase.oversightReview.substantialModificationAssessment!;
+      expect(assessment.status).toBe("needs_review");
+      expect(assessment.providerDutiesTriggered).toContain("Conformity assessment");
+      expect(assessment.providerDutiesTriggered.length).toBeGreaterThanOrEqual(2);
+      expect(useCase.workflowStatus).toBe("suspended");
+      expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
+    }
+  });
+
+  it("keeps no-substantial-modification conclusions current and duty-free", () => {
+    const unchangedUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.substantialModificationAssessment?.conclusion === "no_substantial_modification"
+    );
+
+    expect(unchangedUseCases.length).toBeGreaterThanOrEqual(1);
+    for (const useCase of unchangedUseCases) {
+      const assessment = useCase.oversightReview.substantialModificationAssessment!;
+      expect(assessment.status).toBe("current");
+      expect(assessment.providerDutiesTriggered).toHaveLength(0);
+    }
+  });
+
 });

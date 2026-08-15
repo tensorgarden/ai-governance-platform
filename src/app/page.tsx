@@ -413,6 +413,22 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
           <div className="mt-1 text-slate-500">{useCase.oversightReview.fundamentalRightsAssessment.updateTrigger}</div>
         </div>
       )}
+      {useCase.oversightReview.substantialModificationAssessment && (
+        <div className="mt-3 rounded-lg border border-fuchsia-100 bg-fuchsia-50/70 p-3 text-xs">
+          <div className="flex items-center justify-between gap-2">
+            <div className="font-semibold uppercase tracking-wide text-fuchsia-700">Article 25 substantial modification</div>
+            <Badge tone={useCase.oversightReview.substantialModificationAssessment.conclusion === "no_substantial_modification" ? "green" : "red"}>
+              {useCase.oversightReview.substantialModificationAssessment.conclusion.replace(/_/g, " ")}
+            </Badge>
+          </div>
+          <div className="mt-1 text-slate-700">
+            {useCase.oversightReview.substantialModificationAssessment.conclusion === "no_substantial_modification"
+              ? `Changes stay within the provider's documented instructions of use · ${useCase.oversightReview.substantialModificationAssessment.accountableOwner}`
+              : `${useCase.oversightReview.substantialModificationAssessment.providerDutiesTriggered.length} provider duties triggered · deployer reclassification under review`}
+          </div>
+          <div className="mt-1 text-slate-500">{useCase.oversightReview.substantialModificationAssessment.intendedPurposeImpact}</div>
+        </div>
+      )}
       <div className="mt-3 rounded-lg border border-amber-100 bg-amber-50/70 p-3 text-xs">
         <div className="font-semibold uppercase tracking-wide text-amber-700">Incident reporting readiness</div>
         <div className="mt-1 text-slate-700">
