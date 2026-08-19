@@ -157,6 +157,20 @@ export interface AffectedPersonNotificationReadiness {
   evidenceArtifactIds: string[];
 }
 
+export type WorkerRepresentativeNoticeStatus = "ready" | "needs_action";
+
+export interface WorkerRepresentativeNoticeReadiness {
+  status: WorkerRepresentativeNoticeStatus;
+  informedWorkersRepresentatives: boolean;
+  representativeBodies: string[];
+  affectedWorkerGroups: string[];
+  noticeMethod: string;
+  informedBeforeInService: boolean;
+  lastVerifiedAt: string;
+  remediationDueAt?: string;
+  evidenceArtifactIds: string[];
+}
+
 export interface AIUseCaseOversightReview {
   lastReviewedAt: string;
   reviewCadenceDays: number;
@@ -173,6 +187,7 @@ export interface AIUseCaseOversightReview {
   transparencyReadiness?: Article50TransparencyReadiness;
   fundamentalRightsAssessment?: FundamentalRightsImpactAssessment;
   substantialModificationAssessment?: SubstantialModificationAssessment;
+  workerRepresentativeNotice?: WorkerRepresentativeNoticeReadiness;
   seriousIncidentEscalation: SeriousIncidentEscalationPlan;
 }
 

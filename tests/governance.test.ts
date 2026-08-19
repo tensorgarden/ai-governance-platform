@@ -730,4 +730,68 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("informs worker representatives before high-risk AI enters workplace service", () => {
+    const artifactById = new Map(
+      demoComplianceReports.flatMap(report => report.evidenceArtifacts).map(artifact => [artifact.id, artifact])
+    );
+    const regulatedUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
+    );
+
+    expect(regulatedUseCases.length).toBeGreaterThanOrEqual(2);
+    for (const useCase of regulatedUseCases) {
+      const notice = useCase.oversightReview.workerRepresentativeNotice;
+      expect(notice, `${useCase.id} should document Article 26(7) worker representative information`).toBeDefined();
+      expect(notice!.representativeBodies.length).toBeGreaterThanOrEqual(1);
+      expect(notice!.affectedWorkerGroups.length).toBeGreaterThanOrEqual(1);
+      expect(notice!.noticeMethod.length).toBeGreaterThan(20);
+      expect(new Date(notice!.lastVerifiedAt).toString()).not.toBe("Invalid Date");
+      expect(notice!.evidenceArtifactIds.length).toBeGreaterThanOrEqual(1);
+      expect(notice!.evidenceArtifactIds.every(artifactId => artifactById.get(artifactId)?.framework === "EU AI Act")).toBe(true);
+    }
+  });
+
+  it("keeps uninformed worker representatives in time-bound pre-service governance", () => {
+    const gaps = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.workerRepresentativeNotice?.status === "needs_action"
+    );
+    const ready = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.workerRepresentativeNotice?.status === "ready"
+    );
+
+    expect(gaps.length).toBeGreaterThanOrEqual(1);
+    expect(ready.length).toBeGreaterThanOrEqual(1);
+
+    for (const useCase of gaps) {
+      const notice = useCase.oversightReview.workerRepresentativeNotice!;
+      expect(notice.informedWorkersRepresentatives).toBe(false);
+      expect(notice.informedBeforeInService).toBe(false);
+      expect(new Date(notice.remediationDueAt!).getTime()).toBeGreaterThan(new Date(notice.lastVerifiedAt).getTime());
+      expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
+      expect(["risk_assessment", "remediation", "suspended"]).toContain(useCase.workflowStatus);
+    }
+
+    for (const useCase of ready) {
+      const notice = useCase.oversightReview.workerRepresentativeNotice!;
+      expect(notice.informedWorkersRepresentatives).toBe(true);
+      expect(notice.informedBeforeInService).toBe(true);
+    }
+  });
+
+  it("keeps worker notice distinct from affected-person decision notice", () => {
+    const dualNoticeUseCases = demoUseCaseInventory.filter(
+      useCase =>
+        useCase.oversightReview.workerRepresentativeNotice !== undefined &&
+        useCase.oversightReview.affectedPersonNotification !== undefined
+    );
+
+    expect(dualNoticeUseCases.length).toBeGreaterThanOrEqual(1);
+    for (const useCase of dualNoticeUseCases) {
+      const workerGroups = useCase.oversightReview.workerRepresentativeNotice!.affectedWorkerGroups;
+      const personGroups = useCase.oversightReview.affectedPersonNotification!.affectedGroups;
+      const overlap = workerGroups.filter(group => personGroups.includes(group));
+      expect(overlap, `${useCase.id} conflates Article 26(7) worker notice with Article 26(11) affected-person notice`).toHaveLength(0);
+    }
+  });
+
 });

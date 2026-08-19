@@ -167,6 +167,7 @@ export const demoComplianceReports: ComplianceReport[] = [
       { id: "art_015", framework: "EU AI Act", control: "Article 26 deployer-controlled input-data relevance and representativeness review", artifactType: "risk_assessment", owner: "AI Data Governance", collectedAt: "2026-07-30T15:10:00Z", retention: "10 years", status: "current" },
       { id: "art_016", framework: "EU AI Act", control: "Article 26(11) affected-person notification templates, pre-decision timing verification, and delivery sampling", artifactType: "review_record", owner: "Legal & Compliance Review", collectedAt: "2026-08-01T10:30:00Z", retention: "10 years", status: "current" },
       { id: "art_017", framework: "EU AI Act", control: "Article 25 substantial-modification assessment, provider-duty trigger review, and intended-purpose change analysis", artifactType: "risk_assessment", owner: "AI Safety Board", collectedAt: "2026-08-12T10:15:00Z", retention: "10 years", status: "current" },
+      { id: "art_018", framework: "EU AI Act", control: "Article 26(7) worker representative and affected-worker information before high-risk AI workplace deployment", artifactType: "review_record", owner: "People Operations Legal", collectedAt: "2026-08-14T10:00:00Z", retention: "7 years", status: "current" },
     ],
   },
   {
@@ -439,6 +440,17 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         lastAssessedAt: "2026-08-12T09:30:00Z",
         evidenceArtifactIds: ["art_001", "art_017"],
       },
+      workerRepresentativeNotice: {
+        status: "needs_action",
+        informedWorkersRepresentatives: false,
+        representativeBodies: ["European Works Council", "People Operations staff committee"],
+        affectedWorkerGroups: ["Recruiters", "Sourcers", "People analytics reviewers"],
+        noticeMethod: "Works-council pre-deployment briefing and tracked worker notice pack, still unsigned before the suspended shortlisting workflow can return to service.",
+        informedBeforeInService: false,
+        lastVerifiedAt: "2026-08-14T09:45:00Z",
+        remediationDueAt: "2026-08-21T17:00:00Z",
+        evidenceArtifactIds: ["art_018"],
+      },
       seriousIncidentEscalation: {
         playbookOwner: "People Operations AI Review Board",
         marketAuthority: "Irish Market Surveillance Authority",
@@ -554,6 +566,16 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         accountableOwner: "Finance Risk Committee",
         lastAssessedAt: "2026-08-12T10:00:00Z",
         evidenceArtifactIds: ["art_001", "art_017"],
+      },
+      workerRepresentativeNotice: {
+        status: "ready",
+        informedWorkersRepresentatives: true,
+        representativeBodies: ["Finance staff forum", "German works council for the supervised credit team"],
+        affectedWorkerGroups: ["Credit analysts", "Risk approvers"],
+        noticeMethod: "Pre-launch works-council consultation with tracked acknowledgement from employee representatives before the copilot entered service.",
+        informedBeforeInService: true,
+        lastVerifiedAt: "2026-08-14T11:15:00Z",
+        evidenceArtifactIds: ["art_018"],
       },
       seriousIncidentEscalation: {
         playbookOwner: "Finance Risk Committee",
