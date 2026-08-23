@@ -456,6 +456,7 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         marketAuthority: "Irish Market Surveillance Authority",
         reportingWindowHours: 360,
         acceleratedWindowHours: 48,
+        initialReportTemplateReady: true,
         lastDrillAt: "2026-06-09T13:45:00Z",
         notificationChain: [
           { sequence: 1, role: "internal_owner", organization: "People Operations AI Review Board", contactRoute: "24/7 incident bridge", targetWithinHours: 1, evidenceArtifactIds: ["art_010"] },
@@ -582,6 +583,7 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
         marketAuthority: "BaFin AI Market Surveillance Desk",
         reportingWindowHours: 360,
         acceleratedWindowHours: 48,
+        initialReportTemplateReady: true,
         lastDrillAt: "2026-06-09T14:00:00Z",
         notificationChain: [
           { sequence: 1, role: "internal_owner", organization: "Finance Risk Committee", contactRoute: "Regulatory incident bridge", targetWithinHours: 1, evidenceArtifactIds: ["art_010"] },

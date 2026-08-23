@@ -35,6 +35,7 @@ export interface SeriousIncidentEscalationPlan {
   marketAuthority: string;
   reportingWindowHours: number;
   acceleratedWindowHours?: number;
+  initialReportTemplateReady?: boolean;
   lastDrillAt: string;
   notificationChain: IncidentNotificationRecipient[];
   evidenceArtifactIds: string[];

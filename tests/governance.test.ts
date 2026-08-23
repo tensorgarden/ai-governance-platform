@@ -584,6 +584,21 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("prepares high-risk incident reports for accelerated initial submission", () => {
+    const highRiskEuUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
+    );
+
+    expect(highRiskEuUseCases.length).toBeGreaterThanOrEqual(2);
+    for (const useCase of highRiskEuUseCases) {
+      const plan = useCase.oversightReview.seriousIncidentEscalation;
+      expect(plan.acceleratedWindowHours).toBeDefined();
+      expect(plan.acceleratedWindowHours!).toBeLessThanOrEqual(48);
+      expect(plan.initialReportTemplateReady).toBe(true);
+      expect(plan.evidenceArtifactIds).toContain("art_010");
+    }
+  });
+
   it("maps the Article 26 external notification sequence for high-risk EU AI use cases", () => {
     const regulatedUseCases = demoUseCaseInventory.filter(
       useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
