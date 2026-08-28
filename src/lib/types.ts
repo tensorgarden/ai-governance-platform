@@ -172,6 +172,23 @@ export interface WorkerRepresentativeNoticeReadiness {
   evidenceArtifactIds: string[];
 }
 
+export type ProviderEvidenceReadinessStatus = "ready" | "needs_action";
+export type ProviderMonitoringDataAccess = "full" | "partial" | "unavailable";
+
+export interface ProviderEvidenceReadiness {
+  status: ProviderEvidenceReadinessStatus;
+  instructionsForUseVersion: string;
+  technicalDocumentationAvailable: boolean;
+  monitoringDataAccess: ProviderMonitoringDataAccess;
+  incidentContactRoute: string;
+  providerResponseTargetHours: number;
+  missingEvidence: string[];
+  accountableOwner: string;
+  lastVerifiedAt: string;
+  remediationDueAt?: string;
+  evidenceArtifactIds: string[];
+}
+
 export interface AIUseCaseOversightReview {
   lastReviewedAt: string;
   reviewCadenceDays: number;
@@ -189,6 +206,7 @@ export interface AIUseCaseOversightReview {
   fundamentalRightsAssessment?: FundamentalRightsImpactAssessment;
   substantialModificationAssessment?: SubstantialModificationAssessment;
   workerRepresentativeNotice?: WorkerRepresentativeNoticeReadiness;
+  providerEvidenceReadiness?: ProviderEvidenceReadiness;
   seriousIncidentEscalation: SeriousIncidentEscalationPlan;
 }
 

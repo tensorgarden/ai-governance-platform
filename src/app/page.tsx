@@ -447,6 +447,24 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
           <div className="mt-1 text-slate-500">{useCase.oversightReview.substantialModificationAssessment.intendedPurposeImpact}</div>
         </div>
       )}
+      {useCase.oversightReview.providerEvidenceReadiness && (
+        <div className="mt-3 rounded-lg border border-sky-100 bg-sky-50/70 p-3 text-xs">
+          <div className="flex items-center justify-between gap-2">
+            <div className="font-semibold uppercase tracking-wide text-sky-700">Provider evidence handoff</div>
+            <Badge tone={useCase.oversightReview.providerEvidenceReadiness.status === "ready" ? "green" : "amber"}>
+              {useCase.oversightReview.providerEvidenceReadiness.status.replace(/_/g, " ")}
+            </Badge>
+          </div>
+          <div className="mt-1 text-slate-700">
+            {useCase.oversightReview.providerEvidenceReadiness.monitoringDataAccess} monitoring access · {useCase.oversightReview.providerEvidenceReadiness.providerResponseTargetHours}h provider response target
+          </div>
+          <div className="mt-1 text-slate-500">
+            {useCase.oversightReview.providerEvidenceReadiness.status === "ready"
+              ? `Instructions ${useCase.oversightReview.providerEvidenceReadiness.instructionsForUseVersion} · evidence access verified`
+              : `${useCase.oversightReview.providerEvidenceReadiness.missingEvidence.length} missing provider evidence items · remediation due ${new Date(useCase.oversightReview.providerEvidenceReadiness.remediationDueAt!).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`}
+          </div>
+        </div>
+      )}
       <div className="mt-3 rounded-lg border border-amber-100 bg-amber-50/70 p-3 text-xs">
         <div className="font-semibold uppercase tracking-wide text-amber-700">Incident reporting readiness</div>
         <div className="mt-1 text-slate-700">

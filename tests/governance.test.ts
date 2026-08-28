@@ -809,4 +809,54 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+  it("tracks provider evidence access for regulated high-risk use cases", () => {
+    const artifactIds = new Set(demoComplianceReports.flatMap(report => report.evidenceArtifacts.map(artifact => artifact.id)));
+    const regulatedUseCases = demoUseCaseInventory.filter(
+      useCase => useCase.riskTier === "high" && useCase.frameworks.includes("EU AI Act")
+    );
+
+    expect(regulatedUseCases.length).toBeGreaterThanOrEqual(2);
+    for (const useCase of regulatedUseCases) {
+      const readiness = useCase.oversightReview.providerEvidenceReadiness;
+      expect(readiness, `${useCase.id} should document provider evidence access`).toBeDefined();
+      expect(readiness!.instructionsForUseVersion.length).toBeGreaterThan(10);
+      expect(readiness!.incidentContactRoute.length).toBeGreaterThan(20);
+      expect(readiness!.providerResponseTargetHours).toBeGreaterThan(0);
+      expect(["full", "partial", "unavailable"]).toContain(readiness!.monitoringDataAccess);
+      expect(readiness!.accountableOwner.length).toBeGreaterThan(10);
+      expect(new Date(readiness!.lastVerifiedAt).toString()).not.toBe("Invalid Date");
+      expect(readiness!.evidenceArtifactIds.length).toBeGreaterThanOrEqual(1);
+      expect(readiness!.evidenceArtifactIds.every(artifactId => artifactIds.has(artifactId))).toBe(true);
+    }
+  });
+
+  it("keeps missing provider evidence in time-bound governance work", () => {
+    const gaps = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.providerEvidenceReadiness?.status === "needs_action"
+    );
+    const ready = demoUseCaseInventory.filter(
+      useCase => useCase.oversightReview.providerEvidenceReadiness?.status === "ready"
+    );
+
+    expect(gaps.length).toBeGreaterThanOrEqual(1);
+    expect(ready.length).toBeGreaterThanOrEqual(1);
+
+    for (const useCase of gaps) {
+      const readiness = useCase.oversightReview.providerEvidenceReadiness!;
+      expect(readiness.technicalDocumentationAvailable).toBe(false);
+      expect(["partial", "unavailable"]).toContain(readiness.monitoringDataAccess);
+      expect(readiness.missingEvidence.length).toBeGreaterThanOrEqual(1);
+      expect(new Date(readiness.remediationDueAt!).getTime()).toBeGreaterThan(new Date(readiness.lastVerifiedAt).getTime());
+      expect(useCase.oversightReview.openFindings).toBeGreaterThan(0);
+      expect(["risk_assessment", "remediation", "suspended"]).toContain(useCase.workflowStatus);
+    }
+
+    for (const useCase of ready) {
+      const readiness = useCase.oversightReview.providerEvidenceReadiness!;
+      expect(readiness.technicalDocumentationAvailable).toBe(true);
+      expect(readiness.monitoringDataAccess).toBe("full");
+      expect(readiness.missingEvidence).toHaveLength(0);
+    }
+  });
+
 });
