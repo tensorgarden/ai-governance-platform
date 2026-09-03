@@ -485,11 +485,15 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
       <div className="mt-3 rounded-lg bg-slate-50 p-3">
         <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Monitoring signals</div>
         <div className="mt-2 space-y-2">
-          {useCase.oversightReview.monitoringSignals.slice(0, 2).map(signal => (
+          {useCase.oversightReview.monitoringSignals.map(signal => (
             <div key={signal.id} className="flex items-start justify-between gap-2 text-xs">
               <div>
                 <div className="font-semibold text-slate-800">{signal.name}</div>
                 <div className="text-slate-500">{signal.observedValue}</div>
+                <div className="text-slate-400">
+                  Response: {signal.responseAction.replace(/_/g, " ")}
+                  {signal.correctiveActionDue && ` · due ${new Date(signal.correctiveActionDue).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`}
+                </div>
               </div>
               <Badge tone={signalTone[signal.status] || "slate"}>{signal.status}</Badge>
             </div>

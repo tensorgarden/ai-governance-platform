@@ -7,11 +7,13 @@ export type AIUseCaseRiskTier = "low" | "limited" | "high" | "prohibited";
 export type GovernanceWorkflowStatus = "intake" | "risk_assessment" | "approved" | "monitoring" | "remediation" | "suspended";
 export type GovernanceReviewerRole = "business_owner" | "technical_lead" | "legal" | "compliance" | "security" | "ethics";
 export type MonitoringSignalStatus = "green" | "watch" | "breach";
+export type MonitoringSignalResponse = "continue_monitoring" | "remediate" | "suspend_and_notify";
 
 export interface PostMarketMonitoringSignal {
   id: string;
   name: string;
   status: MonitoringSignalStatus;
+  responseAction: MonitoringSignalResponse;
   lastCheckedAt: string;
   threshold: string;
   observedValue: string;

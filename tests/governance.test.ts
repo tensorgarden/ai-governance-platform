@@ -859,4 +859,32 @@ describe("AI Governance Platform — demo data integrity", () => {
     }
   });
 
+
+  it("maps monitoring status to a defined operational response", () => {
+    const responseByStatus = {
+      green: "continue_monitoring",
+      watch: "remediate",
+      breach: "suspend_and_notify",
+    } as const;
+
+    for (const useCase of demoUseCaseInventory) {
+      for (const signal of useCase.oversightReview.monitoringSignals) {
+        expect(signal.responseAction).toBe(responseByStatus[signal.status]);
+      }
+    }
+  });
+
+  it("makes breach responses visible as suspension and notification work", () => {
+    const breachedSignals = demoUseCaseInventory.flatMap(useCase =>
+      useCase.oversightReview.monitoringSignals.filter(signal => signal.status === "breach")
+    );
+
+    expect(breachedSignals.length).toBeGreaterThanOrEqual(1);
+    expect(breachedSignals.every(signal => signal.responseAction === "suspend_and_notify")).toBe(true);
+
+    const breachedUseCases = demoUseCaseInventory.filter(useCase =>
+      useCase.oversightReview.monitoringSignals.some(signal => signal.status === "breach")
+    );
+    expect(breachedUseCases.every(useCase => useCase.workflowStatus === "suspended")).toBe(true);
+  });
 });

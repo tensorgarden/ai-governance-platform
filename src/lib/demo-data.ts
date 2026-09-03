@@ -312,7 +312,7 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       evidenceArtifactIds: ["art_002"],
       postMarketMonitoring: false,
       monitoringSignals: [
-        { id: "sig_001", name: "Grounded summary sampling", status: "green", lastCheckedAt: "2026-06-08T09:30:00Z", threshold: ">= 95% sampled summaries grounded in approved playbooks", observedValue: "97% grounded", evidenceArtifactIds: ["art_002"] },
+        { id: "sig_001", name: "Grounded summary sampling", status: "green", lastCheckedAt: "2026-06-08T09:30:00Z", threshold: ">= 95% sampled summaries grounded in approved playbooks", observedValue: "97% grounded", responseAction: "continue_monitoring", evidenceArtifactIds: ["art_002"] },
       ],
       aiLiteracyReadiness: {
         status: "current",
@@ -362,9 +362,9 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       evidenceArtifactIds: ["art_001", "art_002"],
       postMarketMonitoring: true,
       monitoringSignals: [
-        { id: "sig_002", name: "Adverse impact ratio delta", status: "breach", lastCheckedAt: "2026-06-09T09:00:00Z", threshold: "< 5% swing across protected-class proxy groups", observedValue: "11.4% swing in senior engineering sample, crossing the 5% threshold", correctiveActionDue: "2026-06-12T17:00:00Z", evidenceArtifactIds: ["art_001", "art_009"] },
-        { id: "sig_003", name: "Recruiter override review coverage", status: "green", lastCheckedAt: "2026-06-09T09:15:00Z", threshold: "100% AI-ranked shortlists sampled by accountable recruiter", observedValue: "100% sampled with named reviewer", evidenceArtifactIds: ["art_002"] },
-        { id: "sig_007", name: "Protected-class parity audit — senior engineering", status: "breach", lastCheckedAt: "2026-06-11T11:00:00Z", threshold: "Selection rate within 80% of the most-selected group across all protected-class proxies", observedValue: "71% parity in senior engineering sample; system use suspended pending investigation", correctiveActionDue: "2026-06-18T17:00:00Z", evidenceArtifactIds: ["art_001", "art_009"] },
+        { id: "sig_002", name: "Adverse impact ratio delta", status: "breach", lastCheckedAt: "2026-06-09T09:00:00Z", threshold: "< 5% swing across protected-class proxy groups", observedValue: "11.4% swing in senior engineering sample, crossing the 5% threshold", correctiveActionDue: "2026-06-12T17:00:00Z", responseAction: "suspend_and_notify", evidenceArtifactIds: ["art_001", "art_009"] },
+        { id: "sig_003", name: "Recruiter override review coverage", status: "green", lastCheckedAt: "2026-06-09T09:15:00Z", threshold: "100% AI-ranked shortlists sampled by accountable recruiter", observedValue: "100% sampled with named reviewer", responseAction: "continue_monitoring", evidenceArtifactIds: ["art_002"] },
+        { id: "sig_007", name: "Protected-class parity audit — senior engineering", status: "breach", lastCheckedAt: "2026-06-11T11:00:00Z", threshold: "Selection rate within 80% of the most-selected group across all protected-class proxies", observedValue: "71% parity in senior engineering sample; system use suspended pending investigation", correctiveActionDue: "2026-06-18T17:00:00Z", responseAction: "suspend_and_notify", evidenceArtifactIds: ["art_001", "art_009"] },
       ],
       aiLiteracyReadiness: {
         status: "needs_refresh",
@@ -507,8 +507,8 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       evidenceArtifactIds: ["art_001", "art_004"],
       postMarketMonitoring: true,
       monitoringSignals: [
-        { id: "sig_004", name: "Explanation drift review", status: "watch", lastCheckedAt: "2026-06-09T10:20:00Z", threshold: "< 3 unresolved explanation mismatches per week", observedValue: "3 unresolved mismatches awaiting risk committee sign-off", correctiveActionDue: "2026-06-14T17:00:00Z", evidenceArtifactIds: ["art_004", "art_009"] },
-        { id: "sig_005", name: "Human approval sampling", status: "green", lastCheckedAt: "2026-06-09T10:35:00Z", threshold: "100% adverse-action drafts approved before customer impact", observedValue: "100% approval gate coverage", evidenceArtifactIds: ["art_001"] },
+        { id: "sig_004", name: "Explanation drift review", status: "watch", lastCheckedAt: "2026-06-09T10:20:00Z", threshold: "< 3 unresolved explanation mismatches per week", observedValue: "3 unresolved mismatches awaiting risk committee sign-off", correctiveActionDue: "2026-06-14T17:00:00Z", responseAction: "remediate", evidenceArtifactIds: ["art_004", "art_009"] },
+        { id: "sig_005", name: "Human approval sampling", status: "green", lastCheckedAt: "2026-06-09T10:35:00Z", threshold: "100% adverse-action drafts approved before customer impact", observedValue: "100% approval gate coverage", responseAction: "continue_monitoring", evidenceArtifactIds: ["art_001"] },
       ],
       aiLiteracyReadiness: {
         status: "current",
@@ -646,7 +646,7 @@ export const demoUseCaseInventory: AIUseCaseInventoryItem[] = [
       evidenceArtifactIds: ["art_003", "art_013"],
       postMarketMonitoring: false,
       monitoringSignals: [
-        { id: "sig_006", name: "Localization bias sampling", status: "green", lastCheckedAt: "2026-06-03T11:00:00Z", threshold: "No high-severity brand or demographic bias findings in weekly sample", observedValue: "0 high-severity findings", evidenceArtifactIds: ["art_003"] },
+        { id: "sig_006", name: "Localization bias sampling", status: "green", lastCheckedAt: "2026-06-03T11:00:00Z", threshold: "No high-severity brand or demographic bias findings in weekly sample", observedValue: "0 high-severity findings", responseAction: "continue_monitoring", evidenceArtifactIds: ["art_003"] },
       ],
       aiLiteracyReadiness: {
         status: "current",
