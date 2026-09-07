@@ -627,6 +627,7 @@ describe("AI Governance Platform — demo data integrity", () => {
         expect(["green", "watch", "breach"]).toContain(signal.status);
         expect(signal.threshold.length).toBeGreaterThan(10);
         expect(signal.observedValue.length).toBeGreaterThan(5);
+        expect(signal.responseOwner.trim().split(/\s+/).length).toBeGreaterThanOrEqual(2);
         expect(new Date(signal.lastCheckedAt).toString()).not.toBe("Invalid Date");
         expect(signal.evidenceArtifactIds.every(artifactId => artifactIds.has(artifactId))).toBe(true);
 

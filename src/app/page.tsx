@@ -491,7 +491,7 @@ function UseCaseOversightCard({ useCase }: { useCase: AIUseCaseInventoryItem }) 
                 <div className="font-semibold text-slate-800">{signal.name}</div>
                 <div className="text-slate-500">{signal.observedValue}</div>
                 <div className="text-slate-400">
-                  Response: {signal.responseAction.replace(/_/g, " ")}
+                  Response: {signal.responseAction.replace(/_/g, " ")} · owner: {signal.responseOwner}
                   {signal.correctiveActionDue && ` · due ${new Date(signal.correctiveActionDue).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`}
                 </div>
               </div>

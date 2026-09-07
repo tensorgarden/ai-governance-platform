@@ -14,6 +14,7 @@ export interface PostMarketMonitoringSignal {
   name: string;
   status: MonitoringSignalStatus;
   responseAction: MonitoringSignalResponse;
+  responseOwner: string;
   lastCheckedAt: string;
   threshold: string;
   observedValue: string;
