@@ -511,6 +511,14 @@ function UseCaseOversightSection() {
   const regulatedUseCases = demoUseCaseInventory.filter(
     useCase => useCase.riskTier === "high" || useCase.oversightReview.transparencyReadiness !== undefined
   );
+  const monitoringSignals = demoUseCaseInventory.flatMap(useCase => useCase.oversightReview.monitoringSignals);
+  const monitoringUseCases = new Set(
+    demoUseCaseInventory
+      .filter(useCase => useCase.oversightReview.monitoringSignals.length > 0)
+      .map(useCase => useCase.id)
+  ).size;
+  const watchSignals = monitoringSignals.filter(signal => signal.status === "watch").length;
+  const breachedSignals = monitoringSignals.filter(signal => signal.status === "breach").length;
   return (
     <Card>
       <div className="flex items-center justify-between gap-3 mb-4">
@@ -518,6 +526,24 @@ function UseCaseOversightSection() {
         <div className="flex flex-wrap justify-end gap-2">
           <Badge tone="amber">{highRiskUseCases.length} high-risk</Badge>
           <Badge tone="blue">{transparencyUseCases.length} Article 50</Badge>
+        </div>
+      </div>
+      <div aria-label="Post-market monitoring summary" className="mb-4 grid grid-cols-2 gap-2 rounded-xl border border-slate-100 bg-slate-50 p-3 text-xs sm:grid-cols-4">
+        <div>
+          <div className="font-semibold text-slate-800">Monitored use cases</div>
+          <div className="mt-1 text-slate-500">{monitoringUseCases} with live signals</div>
+        </div>
+        <div>
+          <div className="font-semibold text-slate-800">Signals tracked</div>
+          <div className="mt-1 text-slate-500">{monitoringSignals.length} post-market checks</div>
+        </div>
+        <div>
+          <div className="font-semibold text-amber-700">Watch</div>
+          <div className="mt-1 text-slate-500">{watchSignals} need remediation</div>
+        </div>
+        <div>
+          <div className="font-semibold text-red-700">Breach</div>
+          <div className="mt-1 text-slate-500">{breachedSignals} require suspension</div>
         </div>
       </div>
       <div className="space-y-3">
